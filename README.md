@@ -1,2 +1,3 @@
-# midi-to-lsdj
+# MIDI to LSDJ
 Convert a MIDI file into LSDJ project
+
