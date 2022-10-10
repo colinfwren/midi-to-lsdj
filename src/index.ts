@@ -4,8 +4,8 @@ import {
   getTrackEvents,
   getTrackNotes,
   getTrackPhrases,
-  dedupeTrackPhrases,
-  getTrackChains
+  // dedupeTrackPhrases,
+  // getTrackChains
 } from "./process";
 
 async function example(file: string): Promise<void> {
@@ -17,10 +17,10 @@ async function example(file: string): Promise<void> {
   const trackOneNotes = getTrackNotes(midi.tracks[1], trackEvents)
   // Create Phrases from track
   const trackOnePhrases = getTrackPhrases(trackOneNotes, trackEvents)
-  // Deduplicate the Phrases
-  const dedupedTrackOnePhrases = dedupeTrackPhrases(trackOnePhrases)
-  // Create Chains for Phrases
-  const trackOneChains = getTrackChains(dedupedTrackOnePhrases)
+  // // Deduplicate the Phrases
+  // const dedupedTrackOnePhrases = dedupeTrackPhrases(trackOnePhrases)
+  // // Create Chains for Phrases
+  // const trackOneChains = getTrackChains(dedupedTrackOnePhrases)
 
   console.log(trackEvents)
 }
