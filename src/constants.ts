@@ -10,6 +10,14 @@ export const NOTES_MAP = Array(128).fill(0).map((value, index) => {
   return `${noteName}_${octaveIndex}`
 })
 
+export const NOTE_TO_FREQ_MAP = Array(128).fill(0).reduce((freqMap, value, index) => {
+  const noteIndex = index % NOTES_PER_OCTAVE
+  const octaveIndex = (index / OCTAVE_MAX_VALUE).toFixed(0)
+  const noteName = NOTE_NAMES[noteIndex]
+  freqMap[`${noteName}_${octaveIndex}`] = index
+  return freqMap
+}, {})
+
 export const DRUM_MAP = {
   'C_3': 'BD-',
   'B_3': 'MT-',
