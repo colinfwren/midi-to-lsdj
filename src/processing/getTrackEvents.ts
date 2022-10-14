@@ -45,7 +45,10 @@ export function getTrackEvents(track: MidiEvent[], ticksPerBeat: number = 480): 
           }
         }
       default:
-        return agg
+        return {
+          ...agg,
+          tick
+        }
     }
   }, {
     tick: 0,

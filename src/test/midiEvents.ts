@@ -42,7 +42,8 @@ export function createTimeSignatureEvent(deltaTime: number = 0, timeSignature: n
     type: 'timeSignature',
     numerator: timeSignature[0],
     // denominator in MIDI is reverse power of 2
-    denominator: getDenominator(timeSignature[1]),
+    // denominator: getDenominator(timeSignature[1]),
+    denominator: timeSignature[1],
     // This will be 1 click every quarter note which will be incorrect for some time signatures but we don't use this value
     metronome: 24,
     thirtyseconds: 8

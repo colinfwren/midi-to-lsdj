@@ -13,7 +13,7 @@ async function example(file: string): Promise<void> {
   // Get track information TODO: sort out time sig changes properly with ticks
   const trackEvents = getTrackEvents(midi.tracks[0], midi.header.ticksPerBeat)
   // Get the notes for track
-  const trackOneNotes = getTrackNotes(midi.tracks[1], trackEvents)
+  const trackOneNotes = getTrackNotes(midi.tracks[0], trackEvents)
   // Create Phrases from track
   const trackOnePhrases = getPhrasesForTrack(trackOneNotes, trackEvents)
   // // Create Chains for Phrases
@@ -22,4 +22,4 @@ async function example(file: string): Promise<void> {
   console.log(trackOnePhrases)
 }
 
-example('./src/cic.mid')
+example('./src/left-guitar.mid')

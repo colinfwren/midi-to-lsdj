@@ -23,24 +23,46 @@ export function getChunksOfSize(arr: any[], size: number): any[] {
 
 export function getTimeSignatureinSemiQuavers(timeSignature: MidiTimeSignatureEvent): TimeSignatureValues {
   const { numerator, denominator } = timeSignature
-  const deltaFromSemiQuaver = 4 - denominator
-  if (deltaFromSemiQuaver > 0) {
-    return Array(deltaFromSemiQuaver).fill(0).reduce((agg) => {
+  switch (denominator) {
+    case 8:
       return {
-        numerator: agg.numerator * 2,
-        denominator: agg.denominator * 2
+        numerator: numerator * 2,
+        denominator: 16
       }
-    }, { numerator, denominator: 2**denominator })
-  } else if (deltaFromSemiQuaver < 0) {
-    return Array(Math.abs(deltaFromSemiQuaver)).fill(0).reduce((agg) => {
+    case 4:
       return {
-        numerator: agg.numerator / 2,
-        denominator: agg.denominator / 2
+        numerator: numerator ** 2,
+        denominator: 16
       }
-    }, { numerator, denominator: 2**denominator })
+    case 2:
+      return {
+        numerator: numerator ** 4,
+        denominator: 16
+      }
+    case 32:
+      return {
+        numerator: numerator / 2,
+        denominator: 16
+      }
+    default:
+      return {
+        numerator,
+        denominator: 16
+      }
   }
-  return {
-    numerator,
-    denominator
-  }
+  // if (deltaFromSemiQuaver > 0) {
+  //   return Array(deltaFromSemiQuaver).fill(0).reduce((agg) => {
+  //     return {
+  //       numerator: agg.numerator * 2,
+  //       denominator: agg.denominator * 2
+  //     }
+  //   }, { numerator, denominator: 2**denominator })
+  // } else if (deltaFromSemiQuaver < 0) {
+  //   return Array(Math.abs(deltaFromSemiQuaver)).fill(0).reduce((agg) => {
+  //     return {
+  //       numerator: agg.numerator / 2,
+  //       denominator: agg.denominator / 2
+  //     }
+  //   }, { numerator, denominator: 2**denominator })
+  // }
 }

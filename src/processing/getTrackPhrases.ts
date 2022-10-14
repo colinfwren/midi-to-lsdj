@@ -17,7 +17,7 @@ export function getTrackSections(trackEvents: TrackEvents): TrackSection[] {
 }
 
 export function getPhrasesForSection({ bars, tick, notesPerPhrase } : TrackSection, semiQuaver: number): TrackPhrase[] {
-  return Array(bars).fill(0).map((val, index) => {
+  return Array(bars).fill(0).map((_val, index) => {
     const startTick = tick + (index * (notesPerPhrase * semiQuaver))
     const endTick = startTick + (notesPerPhrase * semiQuaver)
     const phraseCount = parseInt(Math.ceil(notesPerPhrase / 16) as any)
