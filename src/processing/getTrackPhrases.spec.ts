@@ -1,4 +1,4 @@
-import {getPhrasesForSection, getPhrasesForTrack, getTrackSections} from './getTrackPhrases';
+import {getPhrasesForSection, getPhrasesForTrack, getTrackSections, getPhrasesNotesAsBase64 } from './getTrackPhrases';
 import {LSDJPhrase, TrackEvents, TrackNotes, TrackPhrase, TrackSection} from '../types';
 import {createEndOfTrackEvent, createTempoEvent, createTimeSignatureEvent} from '../test/midiEvents';
 
@@ -213,6 +213,27 @@ describe('getPhrasesForSection', () => {
   })
 })
 
+describe('getPhrasesNotesAsBase64', () => {
+  it('converts the list of notes and commands into a base64 string', () => {
+    const testNotes = [
+      {
+        notes: ['C#_3', 'C_3'],
+        command: ''
+      },
+      {
+        notes: ['G_6'],
+        command: ''
+      },
+      {
+        notes: [],
+        command: 'H00'
+      }
+    ]
+    const result = getPhrasesNotesAsBase64(testNotes)
+    expect(result).toBe('QyNfMy1DXzMtLUdfNi0tLUgwMA==')
+  })
+})
+
 describe('getPhrasesForTrack', () => {
   it('creates an array of LSDJ phrases for a track', () => {
     const expectedResult: LSDJPhrase[] = [
@@ -220,6 +241,7 @@ describe('getPhrasesForTrack', () => {
         noteCount: 12,
         startTick: 0,
         endTick: 12,
+        key: 'Q18zLS0tLUMjXzMtLS0tRF8zLS0tLUQjXzMtLS0tRV8zLS0tLUZfMy0tLS0tSDAw',
         notes: [
           {
             notes: ['C_3'],
@@ -279,6 +301,7 @@ describe('getPhrasesForTrack', () => {
         noteCount: 16,
         startTick: 12,
         endTick: 28,
+        key: 'RiNfMy0tLS1HXzMtLS0tRyNfMy0tLS1BXzMtLS0tQSNfMy0tLS1CXzMtLS0tQ180LS0tLUMjXzQtLS0=',
         notes: [
           {
             notes: ['F#_3'],
@@ -350,6 +373,7 @@ describe('getPhrasesForTrack', () => {
         noteCount: 16,
         startTick: 28,
         endTick: 44,
+        key: 'RF80LS0tLUQjXzQtLS0tRV80LS0tLUZfNC0tLS1GI180LS0tLUdfNC0tLS1HI180LS0tLUFfNC0tLQ==',
         notes: [
           {
             notes: ['D_4'],
@@ -421,6 +445,7 @@ describe('getPhrasesForTrack', () => {
         noteCount: 16,
         startTick: 44,
         endTick: 60,
+        key: 'QSNfNC0tLS1CXzQtLS0tQ181LS0tLUMjXzUtLS0tRF81LS0tLUQjXzUtLS0tRV81LS0tLUZfNS0tLQ==',
         notes: [
           {
             notes: ['A#_4'],
@@ -492,6 +517,7 @@ describe('getPhrasesForTrack', () => {
         noteCount: 2,
         startTick: 60,
         endTick: 62,
+        key: 'RiNfNS0tLS0tSDAw',
         notes: [
           {
             notes: ['F#_5'],

@@ -1,4 +1,4 @@
-import {TrackEvents, TrackNotes, TrackSection, TrackPhrase, LSDJPhrase} from "../types";
+import {TrackEvents, TrackNotes, TrackSection, TrackPhrase, LSDJPhrase, LSDJNote} from "../types";
 import {MidiTimeSignatureEvent} from "midi-file";
 import {getTimeSignatureinSemiQuavers} from "../utils";
 
@@ -51,6 +51,12 @@ export function getPhrasesForSection({ bars, tick, notesPerPhrase } : TrackSecti
   }).flat()
 }
 
+export function getPhrasesNotesAsBase64(notes: LSDJNote[]): string {
+  const noteString = notes.map(note => `${note.notes.join('-')}-${note.command}`).join('-')
+  const buffer = Buffer.from(noteString, 'utf-8')
+  return buffer.toString('base64')
+}
+
 export function getPhrasesForTrack(trackNotes: TrackNotes, trackEvents: TrackEvents): LSDJPhrase[] {
   // Go through each time signature and break the song into phrases based on the number of notes per phrase
   const trackSections = getTrackSections(trackEvents)
@@ -60,10 +66,12 @@ export function getPhrasesForTrack(trackNotes: TrackNotes, trackEvents: TrackEve
         notes: trackNotes[noteIndex],
         command: ''
       }))
+      const paddedNotes = trackPhrase.noteCount < 16 ? [ ...notes, { notes: [], command: 'H00' }] : notes
       return {
         ...trackPhrase,
         noteIndexes: undefined,
-        notes: trackPhrase.noteCount < 16 ? [ ...notes, { notes: [], command: 'H00' }] : notes
+        notes: paddedNotes,
+        key: getPhrasesNotesAsBase64(paddedNotes)
       }
     })
   }).flat()

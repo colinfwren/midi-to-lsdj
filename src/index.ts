@@ -3,9 +3,8 @@ import { parseMidi } from "midi-file";
 import {
   getTrackEvents,
   getTrackNotes,
-  getPhrasesForTrack
-  // dedupeTrackPhrases,
-  // getTrackChains
+  getPhrasesForTrack,
+  getTrackChains
 } from "./processing";
 
 async function example(file: string): Promise<void> {
@@ -17,10 +16,8 @@ async function example(file: string): Promise<void> {
   const trackOneNotes = getTrackNotes(midi.tracks[1], trackEvents)
   // Create Phrases from track
   const trackOnePhrases = getPhrasesForTrack(trackOneNotes, trackEvents)
-  // // Deduplicate the Phrases
-  // const dedupedTrackOnePhrases = dedupeTrackPhrases(trackOnePhrases)
   // // Create Chains for Phrases
-  // const trackOneChains = getTrackChains(dedupedTrackOnePhrases)
+  const trackOneChains = getTrackChains(trackOnePhrases)
 
   console.log(trackOnePhrases)
 }

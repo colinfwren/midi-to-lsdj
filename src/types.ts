@@ -49,5 +49,11 @@ export type LSDJPhrase = {
   noteCount: number,
   startTick: number,
   endTick: number,
-  notes: LSDJNote[]
+  notes: LSDJNote[],
+  key: string
+}
+
+export type LSDJChain = {
+  key: string,
+  phrases: string[]
 }

@@ -15,8 +15,9 @@ export function getDrumName(noteNumber: number): string {
 }
 
 export function getChunksOfSize(arr: any[], size: number): any[] {
-  return Array.from({ length: Math.ceil(arr.length / size)}, (_value, index) => {
-    arr.slice(index * size, index * size + size)
+  const noOfChunks = Math.ceil(arr.length / size)
+  return Array(noOfChunks).fill(0).map((_val, index) => {
+    return arr.slice(index * size, index * size + size)
   })
 }
 
