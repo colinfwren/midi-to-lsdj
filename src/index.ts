@@ -22,4 +22,4 @@ async function example(file: string): Promise<void> {
   console.log(trackOnePhrases)
 }
 
-example('./src/left-guitar.mid')
+example('./src/p1.mid')

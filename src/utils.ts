@@ -66,3 +66,15 @@ export function getTimeSignatureinSemiQuavers(timeSignature: MidiTimeSignatureEv
   //   }, { numerator, denominator: 2**denominator })
   // }
 }
+
+export function* range(start: number, stop: number, step: number = 1): Generator<number> {
+    if (stop == null) {
+        // one param defined
+        stop = start;
+        start = 0;
+    }
+
+    for (let i = start; step > 0 ? i < stop : i > stop; i += step) {
+        yield i;
+    }
+}

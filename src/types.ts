@@ -12,7 +12,7 @@ export type TrackEvents = {
   semiQuaver: number
 }
 
-export type TrackNotes = {
+export type TrackNotes = { // Map<number, string[]>
   [key: number]: string[]
 }
 

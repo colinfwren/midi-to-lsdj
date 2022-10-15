@@ -1,6 +1,7 @@
 import {MidiEvent, MidiNoteOnEvent} from "midi-file";
 import {TrackEvents, TrackNotes, TrackNoteEvents } from "../types";
 import {NOTES_MAP} from "../constants";
+import { range } from '../utils'
 
 export function getNoteOnEvents(track: MidiEvent[]): TrackNoteEvents {
   const trackNotesEvents: TrackNoteEvents = {
@@ -29,12 +30,10 @@ export function getNoteOnEvents(track: MidiEvent[]): TrackNoteEvents {
 }
 
 export function getTrackNotes(track: MidiEvent[], trackEvents: TrackEvents): TrackNotes {
-  // @ts-ignore
-  const { tick: totalTicks, notes: noteOnEvents} = getNoteOnEvents(track)
-  const noteIndexes = totalTicks / trackEvents.semiQuaver
-  const notesAtTick: TrackNotes = Array(noteIndexes)
-    .fill(0)
-    .map((_val, idx) => idx * trackEvents.semiQuaver)
+  const { notes: noteOnEvents} = getNoteOnEvents(track)
+  const sextuplet = trackEvents.semiQuaver / 3
+  const triplet = sextuplet * 2
+  const notesAtTick = [...range(0, trackEvents.endOfSong.tick, sextuplet)]
     .reduce((agg, tick) => {
       agg[tick] = []
       return agg
@@ -46,7 +45,7 @@ export function getTrackNotes(track: MidiEvent[], trackEvents: TrackEvents): Tra
     // @ts-ignore
     const nextNoteDelta = nextNote.tick - tick
     // This doesn't work because unlike the python lib the JS version uses a delta between notes
-    if (nextNoteDelta % trackEvents.semiQuaver === 0 && typeof notesAtTick[tick] !== 'undefined') {
+    if ([0, sextuplet].includes(nextNoteDelta % triplet) && typeof notesAtTick[tick] !== 'undefined') {
       notesAtTick[tick].push(NOTES_MAP[(event as MidiNoteOnEvent).noteNumber])
     }
   })
