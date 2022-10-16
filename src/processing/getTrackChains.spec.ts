@@ -9,15 +9,18 @@ const phraseOne: LSDJPhrase = {
   notes: [
     {
       notes: ['C#_3', 'C_3'],
-      command: ''
+      command: '',
+      triplets: []
     },
     {
       notes: ['G_6'],
-      command: ''
+      command: '',
+      triplets: []
     },
     {
       notes: [],
-      command: 'H00'
+      command: 'H00',
+      triplets: []
     }
   ]
 }
@@ -30,11 +33,13 @@ const phraseTwo: LSDJPhrase = {
   notes: [
     {
       notes: ['F_4'],
-      command: ''
+      command: '',
+      triplets: []
     },
     {
       notes: [],
-      command: 'H00'
+      command: 'H00',
+      triplets: []
     }
   ]
 }
@@ -47,11 +52,13 @@ const phraseThree: LSDJPhrase = {
   notes: [
     {
       notes: ['C_3', 'E_3', 'G_3'],
-      command: ''
+      command: '',
+      triplets: []
     },
     {
       notes: [],
-      command: 'H00'
+      command: 'H00',
+      triplets: []
     }
   ]
 }

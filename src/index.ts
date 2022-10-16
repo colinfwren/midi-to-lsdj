@@ -16,6 +16,9 @@ async function example(file: string): Promise<void> {
   const trackOneNotes = getTrackNotes(midi.tracks[0], trackEvents)
   // Create Phrases from track
   const trackOnePhrases = getPhrasesForTrack(trackOneNotes, trackEvents)
+  // Create Tables from track
+  // const trackOneTables = getTablesForPhrases(trackOnePhrases)
+  // Update Phrase notes with table ID
   // // Create Chains for Phrases
   const trackOneChains = getTrackChains(trackOnePhrases)
 

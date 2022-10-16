@@ -1,4 +1,10 @@
-import {getPhrasesForSection, getPhrasesForTrack, getTrackSections, getPhrasesNotesAsBase64 } from './getTrackPhrases';
+import {
+  getPhrasesForSection,
+  getPhrasesForTrack,
+  getTrackSections,
+  getPhrasesNotesAsBase64,
+  calculateTripletDelta
+} from './getTrackPhrases';
 import {LSDJPhrase, TrackEvents, TrackNotes, TrackPhrase, TrackSection} from '../types';
 import {createEndOfTrackEvent, createTempoEvent, createTimeSignatureEvent} from '../test/midiEvents';
 
@@ -9,11 +15,11 @@ const trackEvents: TrackEvents = {
       event: createTimeSignatureEvent(0, [6, 8])
     },
     {
-      tick: 12,
+      tick: 36,
       event: createTimeSignatureEvent(0, [4, 4])
     },
     {
-      tick: 44,
+      tick: 132,
       event: createTimeSignatureEvent(0, [9, 8])
     }
   ],
@@ -24,10 +30,10 @@ const trackEvents: TrackEvents = {
     }
   ],
   endOfSong: {
-    tick: 62,
+    tick: 186,
     event: createEndOfTrackEvent(0)
   },
-  semiQuaver: 1,
+  semiQuaver: 3,
 }
 
 const trackSections: TrackSection[] = [
@@ -54,67 +60,191 @@ const trackSections: TrackSection[] = [
 const trackNotes: TrackNotes = {
   0: ['C_3'],
   1: [],
-  2: ['C#_3'],
+  2: [],
   3: [],
-  4: ['D_3'],
+  4: [],
   5: [],
-  6: ['D#_3'],
+  6: ['C#_3'],
   7: [],
-  8: ['E_3'],
+  8: [],
   9: [],
-  10: ['F_3'],
+  10: [],
   11: [],
-  12: ['F#_3'],
+  12: ['D_3'],
   13: [],
-  14: ['G_3'],
+  14: [],
   15: [],
-  16: ['G#_3'],
+  16: [],
   17: [],
-  18: ['A_3'],
-  19: [],
-  20: ['A#_3'],
+  18: ['D#_3'],
+  19: ['F#_3'],
+  20: ['D#_4'],
   21: [],
-  22: ['B_3'],
+  22: [],
   23: [],
-  24: ['C_4'],
+  24: ['E_3'],
   25: [],
-  26: ['C#_4'],
+  26: [],
   27: [],
-  28: ['D_4'],
+  28: [],
   29: [],
-  30: ['D#_4'],
+  30: ['F_3'],
   31: [],
-  32: ['E_4'],
+  32: [],
   33: [],
-  34: ['F_4'],
+  34: [],
   35: [],
-  36: ['F#_4'],
+  36: ['F#_3'],
   37: [],
-  38: ['G_4'],
+  38: [],
   39: [],
-  40: ['G#_4'],
+  40: [],
   41: [],
-  42: ['A_4'],
+  42: ['G_3'],
   43: [],
-  44: ['A#_4'],
+  44: [],
   45: [],
-  46: ['B_4'],
+  46: [],
   47: [],
-  48: ['C_5'],
+  48: ['G#_3'],
   49: [],
-  50: ['C#_5'],
+  50: [],
   51: [],
-  52: ['D_5'],
+  52: [],
   53: [],
-  54: ['D#_5'],
+  54: ['A_3'],
   55: [],
-  56: ['E_5'],
+  56: [],
   57: [],
-  58: ['F_5'],
+  58: [],
   59: [],
-  60: ['F#_5'],
+  60: ['A#_3'],
   61: [],
-  62: ['G_5'],
+  62: [],
+  63: [],
+  64: [],
+  65: [],
+  66: ['B_3'],
+  67: [],
+  68: [],
+  69: [],
+  70: [],
+  71: [],
+  72: ['C_4'],
+  73: [],
+  74: [],
+  75: [],
+  76: [],
+  77: [],
+  78: ['C#_4'],
+  79: [],
+  80: [],
+  81: [],
+  82: [],
+  83: [],
+  84: ['D_4'],
+  85: [],
+  86: [],
+  87: [],
+  88: [],
+  89: [],
+  90: ['D#_4'],
+  91: [],
+  92: [],
+  93: [],
+  94: [],
+  95: [],
+  96: ['E_4'],
+  97: [],
+  98: [],
+  99: [],
+  100: [],
+  101: [],
+  102: ['F_4'],
+  103: [],
+  104: [],
+  105: [],
+  106: [],
+  107: [],
+  108: ['F#_4'],
+  109: [],
+  110: [],
+  111: [],
+  112: [],
+  113: [],
+  114: ['G_4'],
+  115: [],
+  116: [],
+  117: [],
+  118: [],
+  119: [],
+  120: ['G#_4'],
+  121: [],
+  122: [],
+  123: [],
+  124: [],
+  125: [],
+  126: ['A_4'],
+  127: [],
+  128: [],
+  129: [],
+  130: [],
+  131: [],
+  132: ['A#_4'],
+  133: [],
+  134: [],
+  135: [],
+  136: [],
+  137: [],
+  138: ['B_4'],
+  139: [],
+  140: [],
+  141: [],
+  142: [],
+  143: [],
+  144: ['C_5'],
+  145: [],
+  146: [],
+  147: [],
+  148: [],
+  149: [],
+  150: ['C#_5'],
+  151: [],
+  152: [],
+  153: [],
+  154: [],
+  155: [],
+  156: ['D_5'],
+  157: [],
+  158: [],
+  159: [],
+  160: [],
+  161: [],
+  162: ['D#_5'],
+  163: [],
+  164: [],
+  165: [],
+  166: [],
+  167: [],
+  168: ['E_5'],
+  169: [],
+  170: [],
+  171: [],
+  172: [],
+  173: [],
+  174: ['F_5'],
+  175: [],
+  176: [],
+  177: [],
+  178: [],
+  179: [],
+  180: ['F#_5'],
+  181: [],
+  182: [],
+  183: [],
+  184: [],
+  185: [],
+  186: ['G_5'],
 }
 
 describe('getTrackSections', () => {
@@ -129,13 +259,13 @@ describe('getTrackSections', () => {
       {
         notesPerPhrase: 16,
         bars: 2,
-        tick: 12,
+        tick: 36,
         timeSignature: '16/16'
       },
       {
         notesPerPhrase: 18,
         bars: 1,
-        tick: 44,
+        tick: 132,
         timeSignature: '18/16'
       }
     ]
@@ -218,19 +348,22 @@ describe('getPhrasesNotesAsBase64', () => {
     const testNotes = [
       {
         notes: ['C#_3', 'C_3'],
-        command: ''
+        command: '',
+        triplets: []
       },
       {
         notes: ['G_6'],
-        command: ''
+        command: '',
+        triplets: []
       },
       {
         notes: [],
-        command: 'H00'
+        command: 'H00',
+        triplets: []
       }
     ]
     const result = getPhrasesNotesAsBase64(testNotes)
-    expect(result).toBe('QyNfMy1DXzMtLUdfNi0tLUgwMA==')
+    expect(result).toBe('QyNfMy1DXzMtLSAtR182LS0gLS1IMDAtIA==')
   })
 })
 
@@ -240,301 +373,402 @@ describe('getPhrasesForTrack', () => {
       {
         noteCount: 12,
         startTick: 0,
-        endTick: 12,
-        key: 'Q18zLS0tLUMjXzMtLS0tRF8zLS0tLUQjXzMtLS0tRV8zLS0tLUZfMy0tLS0tSDAw',
+        endTick: 36,
+        key: 'Q18zLS0gLS0tIC1DI18zLS0gLS0tIC1EXzMtLSAtLS0gLUQjXzMtLSAzLTEyLS0tIC1FXzMtLSAtLS0gLUZfMy0tIC0tLSAtLUgwMC0g',
         notes: [
           {
             notes: ['C_3'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['C#_3'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['D_3'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['D#_3'],
-            command: ''
+            command: '',
+            triplets: [3, 12]
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['E_3'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['F_3'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: 'H00'
+            command: 'H00',
+            triplets: []
           },
         ]
       },
       {
         noteCount: 16,
-        startTick: 12,
-        endTick: 28,
-        key: 'RiNfMy0tLS1HXzMtLS0tRyNfMy0tLS1BXzMtLS0tQSNfMy0tLS1CXzMtLS0tQ180LS0tLUMjXzQtLS0=',
+        startTick: 36,
+        endTick: 84,
+        key: 'RiNfMy0tIC0tLSAtR18zLS0gLS0tIC1HI18zLS0gLS0tIC1BXzMtLSAtLS0gLUEjXzMtLSAtLS0gLUJfMy0tIC0tLSAtQ180LS0gLS0tIC1DI180LS0gLS0tIA==',
         notes: [
           {
             notes: ['F#_3'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['G_3'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['G#_3'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['A_3'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['A#_3'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['B_3'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['C_4'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['C#_4'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           }
         ]
       },
       {
         noteCount: 16,
-        startTick: 28,
-        endTick: 44,
-        key: 'RF80LS0tLUQjXzQtLS0tRV80LS0tLUZfNC0tLS1GI180LS0tLUdfNC0tLS1HI180LS0tLUFfNC0tLQ==',
+        startTick: 84,
+        endTick: 132,
+        key: 'RF80LS0gLS0tIC1EI180LS0gLS0tIC1FXzQtLSAtLS0gLUZfNC0tIC0tLSAtRiNfNC0tIC0tLSAtR180LS0gLS0tIC1HI180LS0gLS0tIC1BXzQtLSAtLS0g',
         notes: [
           {
             notes: ['D_4'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['D#_4'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['E_4'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['F_4'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['F#_4'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['G_4'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['G#_4'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['A_4'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           }
         ]
       },
       {
         noteCount: 16,
-        startTick: 44,
-        endTick: 60,
-        key: 'QSNfNC0tLS1CXzQtLS0tQ181LS0tLUMjXzUtLS0tRF81LS0tLUQjXzUtLS0tRV81LS0tLUZfNS0tLQ==',
+        startTick: 132,
+        endTick: 180,
+        key: 'QSNfNC0tIC0tLSAtQl80LS0gLS0tIC1DXzUtLSAtLS0gLUMjXzUtLSAtLS0gLURfNS0tIC0tLSAtRCNfNS0tIC0tLSAtRV81LS0gLS0tIC1GXzUtLSAtLS0g',
         notes: [
           {
             notes: ['A#_4'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['B_4'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['C_5'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['C#_5'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['D_5'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['D#_5'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['E_5'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: ['F_5'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           }
         ]
       },
       {
         noteCount: 2,
-        startTick: 60,
-        endTick: 62,
-        key: 'RiNfNS0tLS0tSDAw',
+        startTick: 180,
+        endTick: 186,
+        key: 'RiNfNS0tIC0tLSAtLUgwMC0g',
         notes: [
           {
             notes: ['F#_5'],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: ''
+            command: '',
+            triplets: []
           },
           {
             notes: [],
-            command: 'H00'
+            command: 'H00',
+            triplets: []
           }
         ]
       }
     ]
     const result = getPhrasesForTrack(trackNotes, trackEvents)
     expect(result).toMatchObject(expectedResult)
+  })
+})
+
+const deltaEdgescases = [
+  {
+    name: 'F_3 -> F#_3',
+    triplet: ['F#_3'],
+    root: ['F_3'],
+    delta: 1
+  },
+  {
+    name: 'F_3 -> G_3',
+    triplet: ['G_3'],
+    root: ['F_3'],
+    delta: 2
+  },
+  {
+    name: 'G_5 -> F_4',
+    triplet: ['F_4'],
+    root: ['G_5'],
+    delta: -14
+  },
+  {
+    name: 'G_4 -> F_4',
+    triplet: ['F_4'],
+    root: ['G_4'],
+    delta: -2
+  }
+]
+
+describe('calculateTripletDelta', () => {
+  it('returns the number of semi-tones between the root note and the triplet note', () => {
+    const result = calculateTripletDelta(['A#_3'], ['C#_3'])
+    expect(result).toBe(3)
+  })
+  it.each(deltaEdgescases)('compensates for the freq chart starting at F - ${name}', ({ triplet, root, delta}) => {
+    expect(calculateTripletDelta(root, triplet)).toBe(delta)
   })
 })

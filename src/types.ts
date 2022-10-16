@@ -41,8 +41,9 @@ export type TrackPhrase = {
 }
 
 export type LSDJNote = {
-  notes: string[],
+  notes: string[]
   command: string
+  triplets: number[]
 }
 
 export type LSDJPhrase = {

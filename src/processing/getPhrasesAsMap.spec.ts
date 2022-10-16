@@ -9,15 +9,18 @@ const testPhrase: LSDJPhrase = {
   notes: [
     {
       notes: ['C#_3', 'C_3'],
-      command: ''
+      command: '',
+      triplets: []
     },
     {
       notes: ['G_6'],
-      command: ''
+      command: '',
+      triplets: []
     },
     {
       notes: [],
-      command: 'H00'
+      command: 'H00',
+      triplets: []
     }
   ]
 }
@@ -30,11 +33,13 @@ const otherTestPhrase: LSDJPhrase = {
   notes: [
     {
       notes: ['F_4'],
-      command: ''
+      command: '',
+      triplets: []
     },
     {
       notes: [],
-      command: 'H00'
+      command: 'H00',
+      triplets: []
     }
   ]
 }
