@@ -78,3 +78,9 @@ export function* range(start: number, stop: number, step: number = 1): Generator
         yield i;
     }
 }
+
+export function getTripletKey(notes: number[]): string {
+  const noteString = notes.join('-')
+  const buffer = Buffer.from(noteString, 'utf-8')
+  return buffer.toString('base64')
+}

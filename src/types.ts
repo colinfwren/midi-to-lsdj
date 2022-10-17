@@ -43,7 +43,8 @@ export type TrackPhrase = {
 export type LSDJNote = {
   notes: string[]
   command: string
-  triplets: number[]
+  triplets: number[],
+  tableId?: string,
 }
 
 export type LSDJPhrase = {

@@ -4,7 +4,9 @@ import {
   getTrackEvents,
   getTrackNotes,
   getPhrasesForTrack,
-  getTrackChains
+  getTrackChains,
+  getTablesForPhraseTriplets,
+  setPhraseNoteTableId
 } from "./processing";
 
 async function example(file: string): Promise<void> {
@@ -17,12 +19,12 @@ async function example(file: string): Promise<void> {
   // Create Phrases from track
   const trackOnePhrases = getPhrasesForTrack(trackOneNotes, trackEvents)
   // Create Tables from track
-  // const trackOneTables = getTablesForPhrases(trackOnePhrases)
+  const trackOneTableMap = getTablesForPhraseTriplets(trackOnePhrases)
   // Update Phrase notes with table ID
+  const updatedPhrases = setPhraseNoteTableId(trackOnePhrases, trackOneTableMap)
   // // Create Chains for Phrases
   const trackOneChains = getTrackChains(trackOnePhrases)
-
-  console.log(trackOnePhrases)
+  console.log(trackOneChains)
 }
 
 example('./src/p1.mid')
