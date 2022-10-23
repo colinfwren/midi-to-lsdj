@@ -30,6 +30,7 @@ export function processTrack(track: MidiEvent[], ticksPerBeat: number): LSDJTrac
   const chains = getTrackChains(updatedPhrases)
   return {
     chains,
-    phrases: updatedPhrases
+    phrases: updatedPhrases,
+    tables: trackOneTableMap
   }
 }

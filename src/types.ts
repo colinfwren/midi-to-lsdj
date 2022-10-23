@@ -62,5 +62,6 @@ export type LSDJChain = {
 
 export type LSDJTrack = {
   chains: LSDJChain[],
-  phrases: LSDJPhrase[]
+  phrases: LSDJPhrase[],
+  tables: Map<string, number[]>
 }
