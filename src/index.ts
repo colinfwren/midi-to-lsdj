@@ -8,14 +8,14 @@ import {
   getTablesForPhraseTriplets,
   setPhraseNoteTableId
 } from "./processing";
-import {LSDJChain} from "./types";
+import {LSDJTrack} from "./types";
 
 export function readMidiFile(file: string): MidiData {
   const data = readFileSync(file)
   return parseMidi(data)
 }
 
-export function processTrack(track: MidiEvent[], ticksPerBeat: number): LSDJChain[] {
+export function processTrack(track: MidiEvent[], ticksPerBeat: number): LSDJTrack {
   // Get track information TODO: sort out time sig changes properly with ticks
   const trackEvents = getTrackEvents(track, ticksPerBeat)
   // Get the notes for track
@@ -27,5 +27,9 @@ export function processTrack(track: MidiEvent[], ticksPerBeat: number): LSDJChai
   // Update Phrase notes with table ID
   const updatedPhrases = setPhraseNoteTableId(trackOnePhrases, trackOneTableMap)
   // // Create Chains for Phrases
-  return getTrackChains(updatedPhrases)
+  const chains = getTrackChains(updatedPhrases)
+  return {
+    chains,
+    phrases: updatedPhrases
+  }
 }

@@ -59,3 +59,8 @@ export type LSDJChain = {
   key: string,
   phrases: string[]
 }
+
+export type LSDJTrack = {
+  chains: LSDJChain[],
+  phrases: LSDJPhrase[]
+}
