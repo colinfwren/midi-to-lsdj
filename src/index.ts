@@ -11,8 +11,8 @@ import {
   setChainHexKeys,
   getPhrasesAsMap,
   setChainPhraseHexKeys,
-  setPhraseHexKeys,
-  setTableMapHexKeys
+  setTableMapHexKeys,
+  dedupePhrases
 } from "./processing";
 import {LSDJTrack} from "./types";
 
@@ -41,15 +41,15 @@ export function processTrack(track: MidiEvent[], ticksPerBeat: number): LSDJTrac
   // Set Chain hex keys
   const chainsWithHexKeys = setChainHexKeys(chains, chainMap)
   // create Phrase map so can generate IDs
-  const phraseMap = getPhrasesAsMap(phrases)
+  const phraseMap = getPhrasesAsMap(phrasesWithTableIds)
   const phraseMapKeys = [ ...phraseMap.keys() ]
   // set Phrase hex keys on Chains
   const chainsWithPhraseHexKeys = setChainPhraseHexKeys(chainsWithHexKeys, phraseMapKeys)
   // Set Phrase hex keys on Phrases
-  const phrasesWithHexKeys = setPhraseHexKeys(phrasesWithTableIds, phraseMapKeys)
+  const dedupedPhrasesWithHexKeys = dedupePhrases(phraseMap)
   return {
     chains: chainsWithPhraseHexKeys,
-    phrases: phrasesWithHexKeys,
+    phrases: dedupedPhrasesWithHexKeys,
     tables: tableMapWithHexKeys
   }
 }
