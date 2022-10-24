@@ -60,8 +60,20 @@ export type LSDJChain = {
   phrases: string[]
 }
 
+export type LSDJTableStep = {
+  vol: string,
+  transpose: string,
+  command1: string,
+  command2: string
+}
+
+export type LSDJTable = {
+  key: string,
+  steps: LSDJTableStep[]
+}
+
 export type LSDJTrack = {
   chains: LSDJChain[],
   phrases: LSDJPhrase[],
-  tables: Map<string, number[]>
+  tables: LSDJTable[]
 }
