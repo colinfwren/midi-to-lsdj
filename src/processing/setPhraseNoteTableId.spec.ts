@@ -55,6 +55,8 @@ const trackTables = new Map<string, number[]>([
   ['My01', [3, 5]]
 ])
 
+const trackTablesKeys = [ ...trackTables.keys() ]
+
 describe('setPhraseNoteTableId', () => {
   it('sets the Phrase note table id based on the note delta values in the triplets', () => {
     const expectedResult = [
@@ -73,7 +75,7 @@ describe('setPhraseNoteTableId', () => {
             notes: ['D#_3'],
             command: '',
             triplets: [3, 5],
-            tableId: 'My01'
+            tableId: '01'
           },
           {
             notes: [],
@@ -92,13 +94,13 @@ describe('setPhraseNoteTableId', () => {
             notes: ['C_3'],
             command: '',
             triplets: [1, 3],
-            tableId: 'MS0z'
+            tableId: '00'
           },
           {
             notes: ['D#_3'],
             command: '',
             triplets: [3, 5],
-            tableId: 'My01'
+            tableId: '01'
           },
           {
             notes: [],
@@ -108,7 +110,7 @@ describe('setPhraseNoteTableId', () => {
         ]
       }
     ]
-    const result = setPhraseNoteTableId(phrases, trackTables)
+    const result = setPhraseNoteTableId(phrases, trackTablesKeys)
     expect(result).toMatchObject(expectedResult)
   })
 })

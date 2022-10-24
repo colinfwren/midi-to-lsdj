@@ -84,3 +84,7 @@ export function getTripletKey(notes: number[]): string {
   const buffer = Buffer.from(noteString, 'utf-8')
   return buffer.toString('base64')
 }
+
+export function convertToHex(number: any): string {
+  return ("0" + parseInt(number, 10).toString(16).toUpperCase()).slice(-2);
+}

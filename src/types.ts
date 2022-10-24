@@ -52,7 +52,7 @@ export type LSDJPhrase = {
   startTick: number,
   endTick: number,
   notes: LSDJNote[],
-  key: string
+  key: string,
 }
 
 export type LSDJChain = {

@@ -1,14 +1,14 @@
 import {LSDJPhrase} from "../types";
-import { getTripletKey } from "../utils";
+import {convertToHex, getTripletKey} from "../utils";
 
-export function setPhraseNoteTableId(phrases: LSDJPhrase[], tableMap: Map<string, number[]>): LSDJPhrase[] {
+export function setPhraseNoteTableId(phrases: LSDJPhrase[], tableMapKeys: string[]): LSDJPhrase[] {
   return phrases.map((phrase) => {
     return {
       ...phrase,
       notes: phrase.notes.map((note) => {
         return {
           ...note,
-          tableId:  getTripletKey(note.triplets)
+          tableId: convertToHex(tableMapKeys.indexOf(getTripletKey(note.triplets)))
         }
       })
     }
