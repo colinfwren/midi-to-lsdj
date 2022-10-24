@@ -53,3 +53,11 @@ export function processTrack(track: MidiEvent[], ticksPerBeat: number): LSDJTrac
     tables: tableMapWithHexKeys
   }
 }
+
+function example() {
+  const data = readMidiFile('./src/left-guitar.mid')
+  const track = processTrack(data.tracks[0], data.header.ticksPerBeat as number)
+  console.log(track)
+}
+
+example()

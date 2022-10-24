@@ -69,18 +69,20 @@ describe('setPhraseNoteTableId', () => {
           {
             notes: ['C_3'],
             command: '',
-            triplets: []
+            triplets: [],
+            tableId: ''
           },
           {
             notes: ['D#_3'],
-            command: '',
+            command: 'A01',
             triplets: [3, 5],
             tableId: '01'
           },
           {
             notes: [],
             command: 'H00',
-            triplets: []
+            triplets: [],
+            tableId: '',
           },
         ]
       },
@@ -92,20 +94,21 @@ describe('setPhraseNoteTableId', () => {
         notes: [
           {
             notes: ['C_3'],
-            command: '',
+            command: 'A00',
             triplets: [1, 3],
             tableId: '00'
           },
           {
             notes: ['D#_3'],
-            command: '',
+            command: 'A01',
             triplets: [3, 5],
             tableId: '01'
           },
           {
             notes: [],
             command: 'H00',
-            triplets: []
+            triplets: [],
+            tableId: ''
           }
         ]
       }

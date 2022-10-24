@@ -6,9 +6,12 @@ export function setPhraseNoteTableId(phrases: LSDJPhrase[], tableMapKeys: string
     return {
       ...phrase,
       notes: phrase.notes.map((note) => {
+        const tableId = tableMapKeys.indexOf(getTripletKey(note.triplets))
+        const tableHex = tableId > -1 ? convertToHex(tableId) : ''
         return {
           ...note,
-          tableId: convertToHex(tableMapKeys.indexOf(getTripletKey(note.triplets)))
+          tableId: tableHex,
+          command: tableHex === '' ? note.command : `A${tableHex}`
         }
       })
     }
