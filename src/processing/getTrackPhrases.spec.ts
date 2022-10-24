@@ -64,7 +64,7 @@ const trackNotes: TrackNotes = {
   3: [],
   4: [],
   5: [],
-  6: ['C#_3'],
+  6: ['C#3'],
   7: [],
   8: [],
   9: [],
@@ -76,9 +76,9 @@ const trackNotes: TrackNotes = {
   15: [],
   16: [],
   17: [],
-  18: ['D#_3'],
-  19: ['F#_3'],
-  20: ['D#_4'],
+  18: ['D#3'],
+  19: ['F#3'],
+  20: ['D#4'],
   21: [],
   22: [],
   23: [],
@@ -94,7 +94,7 @@ const trackNotes: TrackNotes = {
   33: [],
   34: [],
   35: [],
-  36: ['F#_3'],
+  36: ['F#3'],
   37: [],
   38: [],
   39: [],
@@ -106,7 +106,7 @@ const trackNotes: TrackNotes = {
   45: [],
   46: [],
   47: [],
-  48: ['G#_3'],
+  48: ['G#3'],
   49: [],
   50: [],
   51: [],
@@ -118,7 +118,7 @@ const trackNotes: TrackNotes = {
   57: [],
   58: [],
   59: [],
-  60: ['A#_3'],
+  60: ['A#3'],
   61: [],
   62: [],
   63: [],
@@ -136,7 +136,7 @@ const trackNotes: TrackNotes = {
   75: [],
   76: [],
   77: [],
-  78: ['C#_4'],
+  78: ['C#4'],
   79: [],
   80: [],
   81: [],
@@ -148,7 +148,7 @@ const trackNotes: TrackNotes = {
   87: [],
   88: [],
   89: [],
-  90: ['D#_4'],
+  90: ['D#4'],
   91: [],
   92: [],
   93: [],
@@ -166,7 +166,7 @@ const trackNotes: TrackNotes = {
   105: [],
   106: [],
   107: [],
-  108: ['F#_4'],
+  108: ['F#4'],
   109: [],
   110: [],
   111: [],
@@ -178,7 +178,7 @@ const trackNotes: TrackNotes = {
   117: [],
   118: [],
   119: [],
-  120: ['G#_4'],
+  120: ['G#4'],
   121: [],
   122: [],
   123: [],
@@ -190,7 +190,7 @@ const trackNotes: TrackNotes = {
   129: [],
   130: [],
   131: [],
-  132: ['A#_4'],
+  132: ['A#4'],
   133: [],
   134: [],
   135: [],
@@ -208,7 +208,7 @@ const trackNotes: TrackNotes = {
   147: [],
   148: [],
   149: [],
-  150: ['C#_5'],
+  150: ['C#5'],
   151: [],
   152: [],
   153: [],
@@ -220,7 +220,7 @@ const trackNotes: TrackNotes = {
   159: [],
   160: [],
   161: [],
-  162: ['D#_5'],
+  162: ['D#5'],
   163: [],
   164: [],
   165: [],
@@ -238,7 +238,7 @@ const trackNotes: TrackNotes = {
   177: [],
   178: [],
   179: [],
-  180: ['F#_5'],
+  180: ['F#5'],
   181: [],
   182: [],
   183: [],
@@ -347,7 +347,7 @@ describe('getPhrasesNotesAsBase64', () => {
   it('converts the list of notes and commands into a base64 string', () => {
     const testNotes = [
       {
-        notes: ['C#_3', 'C_3'],
+        notes: ['C#3', 'C_3'],
         command: '',
         triplets: []
       },
@@ -363,7 +363,7 @@ describe('getPhrasesNotesAsBase64', () => {
       }
     ]
     const result = getPhrasesNotesAsBase64(testNotes)
-    expect(result).toBe('QyNfMy1DXzMtLSAtR182LS0gLS1IMDAtIA==')
+    expect(result).toBe('QyMzLUNfMy0tIC1HXzYtLSAtLUgwMC0g')
   })
 })
 
@@ -374,7 +374,7 @@ describe('getPhrasesForTrack', () => {
         noteCount: 12,
         startTick: 0,
         endTick: 36,
-        key: 'Q18zLS0gLS0tIC1DI18zLS0gLS0tIC1EXzMtLSAtLS0gLUQjXzMtLSAzLTEyLS0tIC1FXzMtLSAtLS0gLUZfMy0tIC0tLSAtLUgwMC0g',
+        key: 'Q18zLS0gLS0tIC1DIzMtLSAtLS0gLURfMy0tIC0tLSAtRCMzLS0gMy0xMi0tLSAtRV8zLS0gLS0tIC1GXzMtLSAtLS0gLS1IMDAtIA==',
         notes: [
           {
             notes: ['C_3'],
@@ -387,7 +387,7 @@ describe('getPhrasesForTrack', () => {
             triplets: []
           },
           {
-            notes: ['C#_3'],
+            notes: ['C#3'],
             command: '',
             triplets: []
           },
@@ -407,7 +407,7 @@ describe('getPhrasesForTrack', () => {
             triplets: []
           },
           {
-            notes: ['D#_3'],
+            notes: ['D#3'],
             command: '',
             triplets: [3, 12]
           },
@@ -447,10 +447,10 @@ describe('getPhrasesForTrack', () => {
         noteCount: 16,
         startTick: 36,
         endTick: 84,
-        key: 'RiNfMy0tIC0tLSAtR18zLS0gLS0tIC1HI18zLS0gLS0tIC1BXzMtLSAtLS0gLUEjXzMtLSAtLS0gLUJfMy0tIC0tLSAtQ180LS0gLS0tIC1DI180LS0gLS0tIA==',
+        key: 'RiMzLS0gLS0tIC1HXzMtLSAtLS0gLUcjMy0tIC0tLSAtQV8zLS0gLS0tIC1BIzMtLSAtLS0gLUJfMy0tIC0tLSAtQ180LS0gLS0tIC1DIzQtLSAtLS0g',
         notes: [
           {
-            notes: ['F#_3'],
+            notes: ['F#3'],
             command: '',
             triplets: []
           },
@@ -470,7 +470,7 @@ describe('getPhrasesForTrack', () => {
             triplets: []
           },
           {
-            notes: ['G#_3'],
+            notes: ['G#3'],
             command: '',
             triplets: []
           },
@@ -490,7 +490,7 @@ describe('getPhrasesForTrack', () => {
             triplets: []
           },
           {
-            notes: ['A#_3'],
+            notes: ['A#3'],
             command: '',
             triplets: []
           },
@@ -520,7 +520,7 @@ describe('getPhrasesForTrack', () => {
             triplets: []
           },
           {
-            notes: ['C#_4'],
+            notes: ['C#4'],
             command: '',
             triplets: []
           },
@@ -535,7 +535,7 @@ describe('getPhrasesForTrack', () => {
         noteCount: 16,
         startTick: 84,
         endTick: 132,
-        key: 'RF80LS0gLS0tIC1EI180LS0gLS0tIC1FXzQtLSAtLS0gLUZfNC0tIC0tLSAtRiNfNC0tIC0tLSAtR180LS0gLS0tIC1HI180LS0gLS0tIC1BXzQtLSAtLS0g',
+        key: 'RF80LS0gLS0tIC1EIzQtLSAtLS0gLUVfNC0tIC0tLSAtRl80LS0gLS0tIC1GIzQtLSAtLS0gLUdfNC0tIC0tLSAtRyM0LS0gLS0tIC1BXzQtLSAtLS0g',
         notes: [
           {
             notes: ['D_4'],
@@ -548,7 +548,7 @@ describe('getPhrasesForTrack', () => {
             triplets: []
           },
           {
-            notes: ['D#_4'],
+            notes: ['D#4'],
             command: '',
             triplets: []
           },
@@ -578,7 +578,7 @@ describe('getPhrasesForTrack', () => {
             triplets: []
           },
           {
-            notes: ['F#_4'],
+            notes: ['F#4'],
             command: '',
             triplets: []
           },
@@ -598,7 +598,7 @@ describe('getPhrasesForTrack', () => {
             triplets: []
           },
           {
-            notes: ['G#_4'],
+            notes: ['G#4'],
             command: '',
             triplets: []
           },
@@ -623,10 +623,10 @@ describe('getPhrasesForTrack', () => {
         noteCount: 16,
         startTick: 132,
         endTick: 180,
-        key: 'QSNfNC0tIC0tLSAtQl80LS0gLS0tIC1DXzUtLSAtLS0gLUMjXzUtLSAtLS0gLURfNS0tIC0tLSAtRCNfNS0tIC0tLSAtRV81LS0gLS0tIC1GXzUtLSAtLS0g',
+        key: 'QSM0LS0gLS0tIC1CXzQtLSAtLS0gLUNfNS0tIC0tLSAtQyM1LS0gLS0tIC1EXzUtLSAtLS0gLUQjNS0tIC0tLSAtRV81LS0gLS0tIC1GXzUtLSAtLS0g',
         notes: [
           {
-            notes: ['A#_4'],
+            notes: ['A#4'],
             command: '',
             triplets: []
           },
@@ -656,7 +656,7 @@ describe('getPhrasesForTrack', () => {
             triplets: []
           },
           {
-            notes: ['C#_5'],
+            notes: ['C#5'],
             command: '',
             triplets: []
           },
@@ -676,7 +676,7 @@ describe('getPhrasesForTrack', () => {
             triplets: []
           },
           {
-            notes: ['D#_5'],
+            notes: ['D#5'],
             command: '',
             triplets: []
           },
@@ -711,10 +711,10 @@ describe('getPhrasesForTrack', () => {
         noteCount: 2,
         startTick: 180,
         endTick: 186,
-        key: 'RiNfNS0tIC0tLSAtLUgwMC0g',
+        key: 'RiM1LS0gLS0tIC0tSDAwLSA=',
         notes: [
           {
-            notes: ['F#_5'],
+            notes: ['F#5'],
             command: '',
             triplets: []
           },
@@ -738,8 +738,8 @@ describe('getPhrasesForTrack', () => {
 
 const deltaEdgescases = [
   {
-    name: 'F_3 -> F#_3',
-    triplet: ['F#_3'],
+    name: 'F_3 -> F#3',
+    triplet: ['F#3'],
     root: ['F_3'],
     delta: 1
   },
@@ -765,7 +765,7 @@ const deltaEdgescases = [
 
 describe('calculateTripletDelta', () => {
   it('returns the number of semi-tones between the root note and the triplet note', () => {
-    const result = calculateTripletDelta(['A#_3'], ['C#_3'])
+    const result = calculateTripletDelta(['A#3'], ['C#3'])
     expect(result).toBe(3)
   })
   it.each(deltaEdgescases)('compensates for the freq chart starting at F - ${name}', ({ triplet, root, delta}) => {
