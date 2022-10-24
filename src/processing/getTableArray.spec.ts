@@ -1,13 +1,32 @@
 import {LSDJTable, LSDJTableStep} from "../types";
-import {blankStep, getTableArray, getTableSteps, hopStep} from "./getTableArray";
+import {
+  blankStep,
+  getDeltaAsHex,
+  getTableArray,
+  getTableSteps,
+  hopStep
+} from "./getTableArray";
 
 const tableMap = new Map<string, number[]>([
-  ['00', [12, 1]]
+  ['00', [12]]
 ])
 
+describe('getDeltaAsHex', () => {
+  it('returns a positive delta as that delta added to 0 in hex', () => {
+    expect(getDeltaAsHex(12)).toBe('0C')
+  })
+  it('returns a negative delta as that delta subtracted from 256 in hex', () => {
+    expect(getDeltaAsHex(-12)).toBe('F4')
+  })
+})
+
 describe('getTableSteps', () => {
-  it('converts a triplet (2 notes) into a note every 4 steps', () => {
+  it('converts a triplet (1 note) into a note every 8 steps', () => {
     const expectedResult: LSDJTableStep[] = [
+      blankStep,
+      blankStep,
+      blankStep,
+      blankStep,
       blankStep,
       blankStep,
       blankStep,
@@ -20,22 +39,19 @@ describe('getTableSteps', () => {
       blankStep,
       blankStep,
       blankStep,
-      {
-        vol: '00',
-        transpose: '02',
-        command1: '---',
-        command2: '---'
-      },
+      blankStep,
       blankStep,
       blankStep,
       blankStep,
       hopStep
     ]
-    const result = getTableSteps([1, 2])
+    const result = getTableSteps([1])
     expect(result).toMatchObject(expectedResult)
   })
-  it('converts a sextuplet (5 notes) into a note every 2 steps', () => {
+  it('converts a sextuplet (3 notes) into a note every 4 steps', () => {
     const expectedResult: LSDJTableStep[] = [
+      blankStep,
+      blankStep,
       blankStep,
       {
         vol: '00',
@@ -44,12 +60,16 @@ describe('getTableSteps', () => {
         command2: '---'
       },
       blankStep,
+      blankStep,
+      blankStep,
       {
         vol: '00',
         transpose: '02',
         command1: '---',
         command2: '---'
       },
+      blankStep,
+      blankStep,
       blankStep,
       {
         vol: '00',
@@ -58,23 +78,11 @@ describe('getTableSteps', () => {
         command2: '---'
       },
       blankStep,
-      {
-        vol: '00',
-        transpose: '04',
-        command1: '---',
-        command2: '---'
-      },
       blankStep,
-      {
-        vol: '00',
-        transpose: '05',
-        command1: '---',
-        command2: '---'
-      },
       blankStep,
       hopStep
     ]
-    const result = getTableSteps([1, 2, 3, 4, 5])
+    const result = getTableSteps([1, 2, 3])
     expect(result).toMatchObject(expectedResult)
   })
 })
@@ -88,6 +96,10 @@ describe('getTableArray', () => {
           blankStep,
           blankStep,
           blankStep,
+          blankStep,
+          blankStep,
+          blankStep,
+          blankStep,
           {
             vol: '00',
             transpose: '0C',
@@ -97,12 +109,7 @@ describe('getTableArray', () => {
           blankStep,
           blankStep,
           blankStep,
-          {
-            vol: '00',
-            transpose: '01',
-            command1: '---',
-            command2: '---'
-          },
+          blankStep,
           blankStep,
           blankStep,
           blankStep,
