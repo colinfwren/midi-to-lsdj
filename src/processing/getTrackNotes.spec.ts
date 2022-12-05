@@ -9,11 +9,11 @@ import {getNoteOnEvents, getTrackNotes} from "./getTrackNotes";
 
 const track = [
   createNoteOnEvent(0),
-  createNoteOnEvent(0, 'E_3'),
+  createNoteOnEvent(0, 'E3'),
   createNoteOffEvent(2),
-  createNoteOffEvent(0, 'E_3'),
-  createNoteOnEvent(0, 'D_3'),
-  createNoteOffEvent(6, 'D_3'),
+  createNoteOffEvent(0, 'E3'),
+  createNoteOnEvent(0, 'D#3'),
+  createNoteOffEvent(6, 'D#3'),
   createNoteOnEvent(0),
   createNoteOffEvent(2)
 ]
@@ -73,11 +73,11 @@ describe('Getting noteOn events in track', () => {
 describe('Getting absolute notes for track', () => {
   it('returns a key/value pair for notes at each 16th note in the track', () => {
     const expectedResult = {
-      0: ['C_3', 'E_3'],
-      2: ['D_3'],
+      0: ['C3', 'E3'],
+      2: ['D#3'],
       4: [],
       6: [],
-      8: ['C_3'],
+      8: ['C3'],
       10: [],
     }
     const result = getTrackNotes(track, {

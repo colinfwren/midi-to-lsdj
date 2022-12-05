@@ -1,18 +1,5 @@
-import {DRUM_MAP, NOTES_MAP} from "./constants";
 import {MidiTimeSignatureEvent} from "midi-file";
 import {TimeSignatureValues} from "./types";
-
-export function getNoteName(noteNumber: number): string {
-  const noteName = NOTES_MAP[noteNumber]
-  return typeof noteNumber !== 'undefined' ? noteName : '---'
-}
-
-export function getDrumName(noteNumber: number): string {
-  const noteName = NOTES_MAP[noteNumber]
-  // @ts-ignore
-  const drumName = DRUM_MAP[noteName]
-  return typeof  drumName !== 'undefined' ? drumName : '---'
-}
 
 export function getChunksOfSize(arr: any[], size: number): any[] {
   const noOfChunks = Math.ceil(arr.length / size)
@@ -87,4 +74,9 @@ export function getTripletKey(notes: number[]): string {
 
 export function convertToHex(number: any): string {
   return ("0" + parseInt(number, 10).toString(16).toUpperCase()).slice(-2);
+}
+
+export function formatLSDJNoteName(note: string): string {
+  if (note.indexOf('#') > -1) return note
+  return `${note[0]}_${note[1]}`
 }

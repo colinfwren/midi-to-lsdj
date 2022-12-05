@@ -580,6 +580,26 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@tonaljs/core@^4.8.0":
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/@tonaljs/core/-/core-4.8.0.tgz#a39669aad7fce825d2c237474b5c32c6a4bbacaf"
+  integrity sha512-4jIqUCrxJHx4eelZiReFDKg42x14iCAUQHiqpLCiCopdhnq+eKbkQc6BdFbWkf/fSltet8QdnJmZOHcE4DaATg==
+
+"@tonaljs/midi@^4.8.0":
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/@tonaljs/midi/-/midi-4.8.0.tgz#bb351cc9d1c6f86b462585919491c5c810de56f1"
+  integrity sha512-5yFLdR5yL4yV2wyeVIWBNAQ70SPvtiJ1QCUlFaC8C3Mmdji/MrqgXWnw+N4XSQ4KP8e2zidO2V+csXwmZvkr9w==
+  dependencies:
+    "@tonaljs/core" "^4.8.0"
+
+"@tonaljs/note@^4.8.0":
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/@tonaljs/note/-/note-4.8.0.tgz#b3d6e351067cf98965d38684abddca43b9843ee0"
+  integrity sha512-xyMD9tAgd2rXG+0U/AXOGb4ODFfC1bLxaFg6Yr5g9fannlikgc+QayFdL9RgjHlbfhM4ioqWDN+9Z6IEnFDDfw==
+  dependencies:
+    "@tonaljs/core" "^4.8.0"
+    "@tonaljs/midi" "^4.8.0"
+
 "@tsconfig/node10@^1.0.7":
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/@tsconfig/node10/-/node10-1.0.9.tgz#df4907fc07a886922637b15e02d4cebc4c0021b2"

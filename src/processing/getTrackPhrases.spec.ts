@@ -58,7 +58,7 @@ const trackSections: TrackSection[] = [
 ]
 
 const trackNotes: TrackNotes = {
-  0: ['C_3'],
+  0: ['C3'],
   1: [],
   2: [],
   3: [],
@@ -70,7 +70,7 @@ const trackNotes: TrackNotes = {
   9: [],
   10: [],
   11: [],
-  12: ['D_3'],
+  12: ['D3'],
   13: [],
   14: [],
   15: [],
@@ -82,13 +82,13 @@ const trackNotes: TrackNotes = {
   21: [],
   22: [],
   23: [],
-  24: ['E_3'],
+  24: ['E3'],
   25: [],
   26: [],
   27: [],
   28: [],
   29: [],
-  30: ['F_3'],
+  30: ['F3'],
   31: [],
   32: [],
   33: [],
@@ -100,7 +100,7 @@ const trackNotes: TrackNotes = {
   39: [],
   40: [],
   41: [],
-  42: ['G_3'],
+  42: ['G3'],
   43: [],
   44: [],
   45: [],
@@ -112,7 +112,7 @@ const trackNotes: TrackNotes = {
   51: [],
   52: [],
   53: [],
-  54: ['A_3'],
+  54: ['A3'],
   55: [],
   56: [],
   57: [],
@@ -124,13 +124,13 @@ const trackNotes: TrackNotes = {
   63: [],
   64: [],
   65: [],
-  66: ['B_3'],
+  66: ['B3'],
   67: [],
   68: [],
   69: [],
   70: [],
   71: [],
-  72: ['C_4'],
+  72: ['C4'],
   73: [],
   74: [],
   75: [],
@@ -142,7 +142,7 @@ const trackNotes: TrackNotes = {
   81: [],
   82: [],
   83: [],
-  84: ['D_4'],
+  84: ['D4'],
   85: [],
   86: [],
   87: [],
@@ -154,13 +154,13 @@ const trackNotes: TrackNotes = {
   93: [],
   94: [],
   95: [],
-  96: ['E_4'],
+  96: ['E4'],
   97: [],
   98: [],
   99: [],
   100: [],
   101: [],
-  102: ['F_4'],
+  102: ['F4'],
   103: [],
   104: [],
   105: [],
@@ -172,7 +172,7 @@ const trackNotes: TrackNotes = {
   111: [],
   112: [],
   113: [],
-  114: ['G_4'],
+  114: ['G4'],
   115: [],
   116: [],
   117: [],
@@ -184,7 +184,7 @@ const trackNotes: TrackNotes = {
   123: [],
   124: [],
   125: [],
-  126: ['A_4'],
+  126: ['A4'],
   127: [],
   128: [],
   129: [],
@@ -196,13 +196,13 @@ const trackNotes: TrackNotes = {
   135: [],
   136: [],
   137: [],
-  138: ['B_4'],
+  138: ['B4'],
   139: [],
   140: [],
   141: [],
   142: [],
   143: [],
-  144: ['C_5'],
+  144: ['C5'],
   145: [],
   146: [],
   147: [],
@@ -214,7 +214,7 @@ const trackNotes: TrackNotes = {
   153: [],
   154: [],
   155: [],
-  156: ['D_5'],
+  156: ['D5'],
   157: [],
   158: [],
   159: [],
@@ -226,13 +226,13 @@ const trackNotes: TrackNotes = {
   165: [],
   166: [],
   167: [],
-  168: ['E_5'],
+  168: ['E5'],
   169: [],
   170: [],
   171: [],
   172: [],
   173: [],
-  174: ['F_5'],
+  174: ['F5'],
   175: [],
   176: [],
   177: [],
@@ -244,7 +244,7 @@ const trackNotes: TrackNotes = {
   183: [],
   184: [],
   185: [],
-  186: ['G_5'],
+  186: ['G5'],
 }
 
 describe('getTrackSections', () => {
@@ -739,34 +739,34 @@ describe('getPhrasesForTrack', () => {
 const deltaEdgescases = [
   {
     name: 'F_3 -> F#3',
-    triplet: ['F#3'],
-    root: ['F_3'],
+    triplet: 'F#3',
+    root: 'F3',
     delta: 1
   },
   {
     name: 'F_3 -> G_3',
-    triplet: ['G_3'],
-    root: ['F_3'],
+    triplet: 'G3',
+    root: 'F3',
     delta: 2
   },
   {
     name: 'G_5 -> F_4',
-    triplet: ['F_4'],
-    root: ['G_5'],
+    triplet: 'F4',
+    root: 'G5',
     delta: -14
   },
   {
     name: 'G_4 -> F_4',
-    triplet: ['F_4'],
-    root: ['G_4'],
+    triplet: 'F4',
+    root: 'G4',
     delta: -2
   }
 ]
 
 describe('calculateTripletDelta', () => {
   it('returns the number of semi-tones between the root note and the triplet note', () => {
-    const result = calculateTripletDelta(['A#3'], ['C#3'])
-    expect(result).toBe(3)
+    const result = calculateTripletDelta('A#3', 'C#3')
+    expect(result).toBe(-9)
   })
   it.each(deltaEdgescases)('compensates for the freq chart starting at F - ${name}', ({ triplet, root, delta}) => {
     expect(calculateTripletDelta(root, triplet)).toBe(delta)

@@ -1,6 +1,6 @@
 import {MidiEvent, MidiNoteOnEvent} from "midi-file";
+import { fromMidiSharps } from "@tonaljs/note";
 import {TrackEvents, TrackNotes, TrackNoteEvents } from "../types";
-import {NOTES_MAP} from "../constants";
 import { range } from '../utils'
 
 export function getNoteOnEvents(track: MidiEvent[]): TrackNoteEvents {
@@ -46,7 +46,7 @@ export function getTrackNotes(track: MidiEvent[], trackEvents: TrackEvents): Tra
     const nextNoteDelta = nextNote.tick - tick
     // This doesn't work because unlike the python lib the JS version uses a delta between notes
     if ([0, sextuplet].includes(nextNoteDelta % triplet) && typeof notesAtTick[tick] !== 'undefined') {
-      notesAtTick[tick].push(NOTES_MAP[(event as MidiNoteOnEvent).noteNumber])
+      notesAtTick[tick].push(fromMidiSharps((event as MidiNoteOnEvent).noteNumber))
     }
   })
   return notesAtTick
