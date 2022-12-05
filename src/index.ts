@@ -12,7 +12,8 @@ import {
   getPhrasesAsMap,
   setChainPhraseHexKeys,
   setTableMapHexKeys,
-  dedupePhrases
+  dedupePhrases,
+  getTableArray
 } from "./processing";
 import {LSDJTrack} from "./types";
 
@@ -32,6 +33,7 @@ export function processTrack(track: MidiEvent[], ticksPerBeat: number): LSDJTrac
   const tableMap = getTablesForPhraseTriplets(phrases)
   const tableMapKeys = [ ...tableMap.keys() ]
   const tableMapWithHexKeys = setTableMapHexKeys(tableMap, tableMapKeys)
+  const tables = getTableArray(tableMapWithHexKeys)
   // Update Phrase notes with table ID
   const phrasesWithTableIds = setPhraseNoteTableId(phrases, tableMapKeys)
   // Create Chains for Phrases
@@ -50,6 +52,6 @@ export function processTrack(track: MidiEvent[], ticksPerBeat: number): LSDJTrac
   return {
     chains: chainsWithPhraseHexKeys,
     phrases: dedupedPhrasesWithHexKeys,
-    tables: tableMapWithHexKeys
+    tables: tables
   }
 }
