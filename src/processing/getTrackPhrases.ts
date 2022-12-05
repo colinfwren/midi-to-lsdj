@@ -1,7 +1,7 @@
 import {TrackEvents, TrackNotes, TrackSection, TrackPhrase, LSDJPhrase, LSDJNote} from "../types";
 import {MidiTimeSignatureEvent} from "midi-file";
-import {getTimeSignatureinSemiQuavers, range} from "../utils";
-import { NOTES_MAP } from "../constants";
+import {distance, interval} from '@tonaljs/core'
+import {getTimeSignatureinSemiQuavers, range, formatLSDJNoteName} from "../utils";
 
 export function getTrackSections(trackEvents: TrackEvents): TrackSection[] {
   return trackEvents.timeSignatures.map((timeSignature, index) => {
@@ -54,16 +54,10 @@ export function getPhrasesNotesAsBase64(notes: LSDJNote[]): string {
   return buffer.toString('base64')
 }
 
-export function calculateTripletDelta(root: string[], triplet: string[]): number {
-  if (root.length > 0 && triplet.length > 0) {
-    const rootNote = root[0]
-    const tripletNote = triplet[0]
-    if ((tripletNote.indexOf('F') > -1 || tripletNote.indexOf('G') > -1) && (rootNote.indexOf('F') < 0 || rootNote.indexOf('G') < 0)) {
-      return NOTES_MAP.indexOf(tripletNote) + 12 - NOTES_MAP.indexOf(rootNote)
-    }
-    return NOTES_MAP.indexOf(tripletNote) - NOTES_MAP.indexOf(rootNote)
-  }
-  return 0
+export function calculateTripletDelta(root: string, triplet: string): number {
+  const intervalName = distance(root, triplet)
+  const intervalObj = interval(intervalName)
+  return intervalObj.empty ? 0 : intervalObj.semitones
 }
 
 export function getPhrasesForTrack(trackNotes: TrackNotes, trackEvents: TrackEvents): LSDJPhrase[] {
@@ -77,12 +71,12 @@ export function getPhrasesForTrack(trackNotes: TrackNotes, trackEvents: TrackEve
         const triplets = tripletIndexes.map((tripletIndex) => {
           const triplet = trackNotes[tripletIndex]
           if (triplet.length > 0) {
-            return calculateTripletDelta(trackNotes[noteIndex], triplet)
+            return calculateTripletDelta(trackNotes[noteIndex][0], triplet[0])
           }
           return []
         }).flat()
         return {
-          notes: trackNotes[noteIndex],
+          notes: trackNotes[noteIndex].map(formatLSDJNoteName),
           command: '',
           triplets
         }

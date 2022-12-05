@@ -1,5 +1,7 @@
 # MIDI to LSDJ
-A library to parse a Midi file using `midi-file` and convert a track from that file into an array of chains, phrases and notes for use with LSDJ.
+A library to parse a Midi file using [`midi-file`](https://www.npmjs.com/package/midi-file) and convert a track from that file into an array of chains, phrases and notes for use with LSDJ.
+
+Uses [`@tonaljs/note`](https://www.npmjs.com/package/@tonaljs/note) convert MIDI note values to notes and [`@tonaljs/core`](https://www.npmjs.com/package/@tonaljs/core) to calculate intervals between notes
 
 ## Usage
 

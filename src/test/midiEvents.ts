@@ -5,7 +5,7 @@ import {
   MidiSetTempoEvent,
   MidiTimeSignatureEvent
 } from "midi-file";
-import {NOTE_TO_FREQ_MAP} from "../constants";
+import { midi }  from "@tonaljs/note";
 
 export function createTempoEvent(deltaTime:number = 0, bpm: number = 120): MidiSetTempoEvent {
   return {
@@ -13,25 +13,6 @@ export function createTempoEvent(deltaTime:number = 0, bpm: number = 120): MidiS
     meta: true,
     type: 'setTempo',
     microsecondsPerBeat: parseInt((60000 / bpm) as any)
-  }
-}
-
-function getDenominator(denominator: number): number {
-  switch (denominator) {
-    case 2:
-      return 1
-    case 4:
-      return 2
-    case 8:
-      return 3
-    case 16:
-      return 4
-    case 32:
-      return 5
-    case 64:
-      return 6
-    default:
-      return 0
   }
 }
 
@@ -58,22 +39,22 @@ export function createEndOfTrackEvent(deltaTime: number = 0): MidiEndOfTrackEven
   }
 }
 
-export function createNoteOnEvent(deltaTime: number = 0, note: string = 'C_3'): MidiNoteOnEvent {
+export function createNoteOnEvent(deltaTime: number = 0, note: string = 'C3'): MidiNoteOnEvent {
   return {
     deltaTime,
     channel: 0,
     type: 'noteOn',
-    noteNumber: NOTE_TO_FREQ_MAP[note],
+    noteNumber: midi(note) ?? 127,
     velocity: 48
   }
 }
 
-export function createNoteOffEvent(deltaTime: number = 0, note: string = 'C_3'): MidiNoteOffEvent {
+export function createNoteOffEvent(deltaTime: number = 0, note: string = 'C3'): MidiNoteOffEvent {
   return {
     deltaTime,
     channel: 0,
     type: 'noteOff',
-    noteNumber: NOTE_TO_FREQ_MAP[note],
+    noteNumber: midi(note) ?? 127,
     velocity: 48
   }
 }
