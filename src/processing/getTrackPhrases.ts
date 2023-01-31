@@ -1,4 +1,4 @@
-import {TrackEvents, TrackNotes, TrackSection, TrackPhrase, LSDJPhrase, LSDJNote} from "../types";
+import {TrackEvents, TrackNotes, TrackSection, TrackPhrase, LSDJPhrase, LSDJNote, LSDJTrack} from "../types";
 import {MidiTimeSignatureEvent} from "midi-file";
 import {distance, interval} from '@tonaljs/core'
 import {getTimeSignatureinSemiQuavers, range, formatLSDJNoteName} from "../utils";
@@ -60,34 +60,38 @@ export function calculateTripletDelta(root: string, triplet: string): number {
   return intervalObj.empty ? 0 : intervalObj.semitones
 }
 
-export function getPhrasesForTrack(trackNotes: TrackNotes, trackEvents: TrackEvents): LSDJPhrase[] {
+export function getPhrasesForTrack(trackNotes: TrackNotes, trackEvents: TrackEvents): LSDJTrack {
   // Go through each time signature and break the song into phrases based on the number of notes per phrase
   const sextuplet = trackEvents.semiQuaver / 3
   const trackSections = getTrackSections(trackEvents)
-  return trackSections.map((section) => {
-    return getPhrasesForSection(section, trackEvents.semiQuaver).map((trackPhrase) => {
-      const notes = trackPhrase.noteIndexes.map((noteIndex) => {
-        const tripletIndexes = [noteIndex + sextuplet, noteIndex + (sextuplet * 2)]
-        const triplets = tripletIndexes.map((tripletIndex) => {
-          const triplet = trackNotes[tripletIndex]
-          if (triplet.length > 0) {
-            return calculateTripletDelta(trackNotes[noteIndex][0], triplet[0])
+  return {
+    chains: [],
+    phrases: trackSections.map((section) => {
+      return getPhrasesForSection(section, trackEvents.semiQuaver).map((trackPhrase) => {
+        const notes = trackPhrase.noteIndexes.map((noteIndex) => {
+          const tripletIndexes = [noteIndex + sextuplet, noteIndex + (sextuplet * 2)]
+          const triplets = tripletIndexes.map((tripletIndex) => {
+            const triplet = trackNotes[tripletIndex]
+            if (triplet.length > 0) {
+              return calculateTripletDelta(trackNotes[noteIndex][0], triplet[0])
+            }
+            return []
+          }).flat()
+          return {
+            notes: trackNotes[noteIndex].map(formatLSDJNoteName),
+            command: '',
+            triplets
           }
-          return []
-        }).flat()
+        })
+        const paddedNotes = trackPhrase.noteCount < 16 ? [ ...notes, { notes: [], command: 'H00', triplets: [] }] : notes
         return {
-          notes: trackNotes[noteIndex].map(formatLSDJNoteName),
-          command: '',
-          triplets
+          ...trackPhrase,
+          noteIndexes: undefined,
+          notes: paddedNotes,
+          key: getPhrasesNotesAsBase64(paddedNotes)
         }
       })
-      const paddedNotes = trackPhrase.noteCount < 16 ? [ ...notes, { notes: [], command: 'H00', triplets: [] }] : notes
-      return {
-        ...trackPhrase,
-        noteIndexes: undefined,
-        notes: paddedNotes,
-        key: getPhrasesNotesAsBase64(paddedNotes)
-      }
-    })
-  }).flat()
+    }).flat(),
+    tables: []
+  }
 }

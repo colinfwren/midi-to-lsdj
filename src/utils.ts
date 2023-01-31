@@ -80,3 +80,5 @@ export function formatLSDJNoteName(note: string): string {
   if (note.indexOf('#') > -1) return note
   return `${note[0]}_${note[1]}`
 }
+
+export const pipe = <T>(...functions: Array<(arg: T) => T>) => (value: T) => functions.reduce((acc, fn) => fn(acc),value)

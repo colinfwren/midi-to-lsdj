@@ -5,7 +5,7 @@ import {
   getPhrasesNotesAsBase64,
   calculateTripletDelta
 } from './getTrackPhrases';
-import {LSDJPhrase, TrackEvents, TrackNotes, TrackPhrase, TrackSection} from '../types';
+import {LSDJPhrase, TrackEvents, TrackNotes, TrackPhrase, TrackSection, LSDJTrack} from '../types';
 import {createEndOfTrackEvent, createTempoEvent, createTimeSignatureEvent} from '../test/midiEvents';
 
 const trackEvents: TrackEvents = {
@@ -369,81 +369,84 @@ describe('getPhrasesNotesAsBase64', () => {
 
 describe('getPhrasesForTrack', () => {
   it('creates an array of LSDJ phrases for a track', () => {
-    const expectedResult: LSDJPhrase[] = [
-      {
-        noteCount: 12,
-        startTick: 0,
-        endTick: 36,
-        key: 'Q18zLS0gLS0tIC1DIzMtLSAtLS0gLURfMy0tIC0tLSAtRCMzLS0gMy0xMi0tLSAtRV8zLS0gLS0tIC1GXzMtLSAtLS0gLS1IMDAtIA==',
-        notes: [
+    const expectedResult: LSDJTrack = {
+      chains: [],
+      tables: [],
+      phrases: [
           {
-            notes: ['C_3'],
-            command: '',
-            triplets: []
+            noteCount: 12,
+            startTick: 0,
+            endTick: 36,
+            key: 'Q18zLS0gLS0tIC1DIzMtLSAtLS0gLURfMy0tIC0tLSAtRCMzLS0gMy0xMi0tLSAtRV8zLS0gLS0tIC1GXzMtLSAtLS0gLS1IMDAtIA==',
+            notes: [
+              {
+                notes: ['C_3'],
+                command: '',
+                triplets: []
+              },
+              {
+                notes: [],
+                command: '',
+                triplets: []
+              },
+              {
+                notes: ['C#3'],
+                command: '',
+                triplets: []
+              },
+              {
+                notes: [],
+                command: '',
+                triplets: []
+              },
+              {
+                notes: ['D_3'],
+                command: '',
+                triplets: []
+              },
+              {
+                notes: [],
+                command: '',
+                triplets: []
+              },
+              {
+                notes: ['D#3'],
+                command: '',
+                triplets: [3, 12]
+              },
+              {
+                notes: [],
+                command: '',
+                triplets: []
+              },
+              {
+                notes: ['E_3'],
+                command: '',
+                triplets: []
+              },
+              {
+                notes: [],
+                command: '',
+                triplets: []
+              },
+              {
+                notes: ['F_3'],
+                command: '',
+                triplets: []
+              },
+              {
+                notes: [],
+                command: '',
+                triplets: []
+              },
+              {
+                notes: [],
+                command: 'H00',
+                triplets: []
+              },
+            ]
           },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['C#3'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['D_3'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['D#3'],
-            command: '',
-            triplets: [3, 12]
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['E_3'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['F_3'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: 'H00',
-            triplets: []
-          },
-        ]
-      },
-      {
+        {
         noteCount: 16,
         startTick: 36,
         endTick: 84,
@@ -619,7 +622,7 @@ describe('getPhrasesForTrack', () => {
           }
         ]
       },
-      {
+        {
         noteCount: 16,
         startTick: 132,
         endTick: 180,
@@ -730,7 +733,8 @@ describe('getPhrasesForTrack', () => {
           }
         ]
       }
-    ]
+      ]
+    }
     const result = getPhrasesForTrack(trackNotes, trackEvents)
     expect(result).toMatchObject(expectedResult)
   })
