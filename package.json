@@ -15,7 +15,8 @@
   "scripts": {
     "dev": "ts-node ./src/index.ts",
     "build": "tsc",
-    "prepublish": "tsc"
+    "prepublish": "tsc",
+    "test": "jest"
   },
   "dependencies": {
     "@tonaljs/core": "^4.8.0",
