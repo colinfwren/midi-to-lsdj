@@ -1,56 +1,15 @@
-import {LSDJChain, LSDJPhrase} from "../types";
+import {LSDJChain} from "../types";
 import { setChainHexKeys, setChainPhraseHexKeys } from "./setChainHexKeys";
-
-const phrase1: LSDJPhrase = {
-  key: 'a',
-  startTick: 0,
-  endTick: 1,
-  noteCount: 1,
-  notes: [
-    {
-      notes: ['D_3'],
-      command: '',
-      triplets: []
-    }
-  ]
-}
-
-const phrase2: LSDJPhrase = {
-  key: 'b',
-  startTick: 1,
-  endTick: 2,
-  noteCount: 1,
-  notes: [
-    {
-      notes: ['D#_3'],
-      command: '',
-      triplets: []
-    }
-  ]
-}
-
-const phrase3: LSDJPhrase = {
-  key: 'c',
-  startTick: 2,
-  endTick: 3,
-  noteCount: 1,
-  notes: [
-    {
-      notes: ['E_3'],
-      command: '',
-      triplets: []
-    }
-  ]
-}
+import {TEST_PHRASE_3, TEST_PHRASE_4, TEST_PHRASE_5} from "../test/lsdj";
 
 const chain1: LSDJChain = {
   key: '1',
-  phrases: [phrase1.key, phrase2.key]
+  phrases: [TEST_PHRASE_3.key, TEST_PHRASE_4.key]
 }
 
 const chain2: LSDJChain = {
   key: '2',
-  phrases: [phrase2.key, phrase3.key]
+  phrases: [TEST_PHRASE_4.key, TEST_PHRASE_5.key]
 }
 
 const chainMap = new Map<string, string[]>([
@@ -59,9 +18,9 @@ const chainMap = new Map<string, string[]>([
 ])
 
 const phraseMapKeys = [
-  phrase1.key,
-  phrase2.key,
-  phrase3.key
+  TEST_PHRASE_3.key,
+  TEST_PHRASE_4.key,
+  TEST_PHRASE_5.key
 ]
 
 const chains = [

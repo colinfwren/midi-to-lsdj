@@ -1,67 +1,24 @@
 import {LSDJChain, LSDJPhrase} from "../types";
 import {getChainKey, getTrackChains, getChainsAsMap} from "./getTrackChains";
+import { createNote, createPhrase, HOP_NOTE, TEST_PHRASE_1, TEST_PHRASE_2 } from "../test/lsdj";
 
 const phraseOne: LSDJPhrase = {
-  noteCount: 2,
-  startTick: 0,
-  endTick: 2,
-  key: '1',
-  notes: [
-    {
-      notes: ['C#_3', 'C_3'],
-      command: '',
-      triplets: []
-    },
-    {
-      notes: ['G_6'],
-      command: '',
-      triplets: []
-    },
-    {
-      notes: [],
-      command: 'H00',
-      triplets: []
-    }
-  ]
+  ...TEST_PHRASE_1,
+  key: '1'
 }
 
 const phraseTwo: LSDJPhrase = {
-  noteCount: 1,
-  startTick: 0,
-  endTick: 2,
-  key: '2',
-  notes: [
-    {
-      notes: ['F_4'],
-      command: '',
-      triplets: []
-    },
-    {
-      notes: [],
-      command: 'H00',
-      triplets: []
-    }
-  ]
+  ...TEST_PHRASE_2,
+  key: '2'
 }
 
-const phraseThree: LSDJPhrase = {
-  noteCount: 1,
-  startTick: 0,
-  endTick: 2,
-  key: '3',
-  notes: [
-    {
-      notes: ['C_3', 'E_3', 'G_3'],
-      command: '',
-      triplets: []
-    },
-    {
-      notes: [],
-      command: 'H00',
-      triplets: []
-    }
+const phraseThree = createPhrase(
+  '3',
+  [
+    createNote(['C_3', 'E_3', 'G_3']),
+    HOP_NOTE
   ]
-}
+)
 
 const testPhrases = [
   phraseOne,

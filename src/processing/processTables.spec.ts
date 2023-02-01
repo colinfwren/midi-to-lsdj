@@ -1,29 +1,19 @@
 import { processTables } from "./processTables";
 import {LSDJTrack} from "../types";
 import {getTableSteps} from "./getTableArray";
+import {createNote, createPhrase} from "../test/lsdj";
 
 const track: LSDJTrack = {
   chains: [],
   tables: [],
   phrases: [
-    {
-      noteCount: 2,
-      startTick: 0,
-      endTick: 2,
-      key: '01',
-      notes: [
-        {
-          notes: ['G_3'],
-          command: '',
-          triplets: [1]
-        },
-        {
-          notes: ['G_3'],
-          command: '',
-          triplets: [1, 2, 3]
-        }
+    createPhrase(
+      '01',
+      [
+        createNote(['G_3'], '', [1]),
+        createNote(['G_3'], '', [1, 2, 3])
       ]
-    }
+    )
   ]
 }
 

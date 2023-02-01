@@ -1,79 +1,38 @@
-import {LSDJPhrase} from "../types";
+
 import {setPhraseHexKeys} from "./setPhraseHexKeys";
-
-const phrase1: LSDJPhrase = {
-  key: 'a',
-  startTick: 0,
-  endTick: 1,
-  noteCount: 1,
-  notes: [
-    {
-      notes: ['D_3'],
-      command: '',
-      triplets: []
-    }
-  ]
-}
-
-const phrase2: LSDJPhrase = {
-  key: 'b',
-  startTick: 1,
-  endTick: 2,
-  noteCount: 1,
-  notes: [
-    {
-      notes: ['D#_3'],
-      command: '',
-      triplets: []
-    }
-  ]
-}
-
-const phrase3: LSDJPhrase = {
-  key: 'c',
-  startTick: 2,
-  endTick: 3,
-  noteCount: 1,
-  notes: [
-    {
-      notes: ['E_3'],
-      command: '',
-      triplets: []
-    }
-  ]
-}
+import { TEST_PHRASE_3, TEST_PHRASE_4, TEST_PHRASE_5} from "../test/lsdj";
 
 const phrases = [
-  phrase1,
-  phrase2,
-  phrase3,
-  phrase1,
+  TEST_PHRASE_3,
+  TEST_PHRASE_4,
+  TEST_PHRASE_5,
+  TEST_PHRASE_3
 ]
 
 
 const phraseMapKeys = [
-  phrase1.key,
-  phrase2.key,
-  phrase3.key
+  TEST_PHRASE_3.key,
+  TEST_PHRASE_4.key,
+  TEST_PHRASE_5.key
 ]
 
 describe('setPhraseHexKeys', () => {
   it('updates the phrase key with the hexadecimal index of the phrase in the phrase map', () => {
     const expectedResult = [
       {
-        ...phrase1,
+        ...TEST_PHRASE_3,
         key: '00'
       },
       {
-        ...phrase2,
+        ...TEST_PHRASE_4,
         key: '01'
       },
       {
-        ...phrase3,
+        ...TEST_PHRASE_5,
         key: '02'
       },
       {
-        ...phrase1,
+        ...TEST_PHRASE_3,
         key: '00'
       }
     ]

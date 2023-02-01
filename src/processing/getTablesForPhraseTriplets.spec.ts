@@ -1,74 +1,19 @@
-import {LSDJPhrase} from "../types";
 import {getTablesForPhraseTriplets} from "./getTablesForPhraseTriplets";
+import {createNote, createPhrase, HOP_NOTE, TEST_PHRASE_6, TEST_PHRASE_7} from "../test/lsdj";
 
-const phrases: LSDJPhrase[] = [
-  {
-    noteCount: 2,
-    startTick: 0,
-    endTick: 6,
-    key: '1',
-    notes: [
-      {
-        notes: ['C_3'],
-        command: '',
-        triplets: []
-      },
-      {
-        notes: ['D#_3'],
-        command: '',
-        triplets: [3, 5]
-      },
-      {
-        notes: [],
-        command: 'H00',
-        triplets: []
-      },
-    ]
-  },
-  {
-    noteCount: 2,
-    startTick: 6,
-    endTick: 12,
-    key: '2',
-    notes: [
-      {
-        notes: ['C_3'],
-        command: '',
-        triplets: [1, 3]
-      },
-      {
-        notes: ['D#_3'],
-        command: '',
-        triplets: [3, 5]
-      },
-      {
-        notes: [],
-        command: 'H00',
-        triplets: []
-      }
-    ]
-  }
+const phrases = [
+  TEST_PHRASE_6,
+  TEST_PHRASE_7
 ]
 
-const tripletPhrases: LSDJPhrase[] = [
-  {
-    noteCount: 1,
-    startTick: 0,
-    endTick: 3,
-    key: '1',
-    notes: [
-      {
-        notes: ['C_3'],
-        command: '',
-        triplets: []
-      },
-      {
-        notes: [],
-        command: 'H00',
-        triplets: []
-      },
+const tripletPhrases = [
+  createPhrase(
+    '1',
+    [
+      createNote(['C_3']),
+      HOP_NOTE
     ]
-  },
+  )
 ]
 
 describe('getTablesForPhraseTriplets', () => {
