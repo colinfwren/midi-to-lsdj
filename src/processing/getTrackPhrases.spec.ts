@@ -38,19 +38,19 @@ const trackEvents: TrackEvents = {
 
 const trackSections: TrackSection[] = [
   {
-    notesPerPhrase: 12,
+    notesPerBar: 12,
     bars: 2,
     tick: 0,
     timeSignature: '12/16' // 6/8
   },
   {
-    notesPerPhrase: 16,
+    notesPerBar: 16,
     bars: 2,
     tick: 0,
     timeSignature: '16/16' // 4/4
   },
   {
-    notesPerPhrase: 24,
+    notesPerBar: 24,
     bars: 2,
     tick: 0,
     timeSignature: '24/16' // 12/8
@@ -259,19 +259,19 @@ describe('getTrackSections', () => {
   it('creates an array of sections for each time signature in the track', () => {
     const expectedResult: TrackSection[] = [
       {
-        notesPerPhrase: 12,
+        notesPerBar: 12,
         bars: 1,
         tick: 0,
         timeSignature: '12/16'
       },
       {
-        notesPerPhrase: 16,
+        notesPerBar: 16,
         bars: 2,
         tick: 36,
         timeSignature: '16/16'
       },
       {
-        notesPerPhrase: 18,
+        notesPerBar: 18,
         bars: 1,
         tick: 132,
         timeSignature: '18/16'

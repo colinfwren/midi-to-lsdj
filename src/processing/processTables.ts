@@ -9,11 +9,12 @@ import {getTableArray} from "./getTableArray";
  * phrases and create the tables array for LSDJ
  *
  * @param {LSDJTrack} track - The LSDJ Track
+ * @returns {LSDJTrack} - The updated LSDJ Track
  */
 export function processTables(track: LSDJTrack): LSDJTrack {
   const tableMap = getTablesForPhraseTriplets(track.phrases)
   const tableMapKeys = [ ...tableMap.keys() ]
-  const tableMapWithHexKeys = setTableMapHexKeys(tableMap, tableMapKeys)
+  const tableMapWithHexKeys = setTableMapHexKeys(tableMap)
   return {
     ...track,
     phrases: setPhraseNoteTableId(track.phrases, tableMapKeys),

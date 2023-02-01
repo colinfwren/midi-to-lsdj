@@ -3,6 +3,12 @@ import { fromMidiSharps } from "@tonaljs/note";
 import {TrackEvents, TrackNotes, TrackNoteEvents } from "../types";
 import { range } from '../utils'
 
+/**
+ * Get the absolute time resolution for when a note is played in the MIDI track
+ *
+ * @param {MidiEvent[]} track - Array of MIDI track events
+ * @returns {TrackNoteEvents} - object containing note on events only
+ */
 export function getNoteOnEvents(track: MidiEvent[]): TrackNoteEvents {
   const trackNotesEvents: TrackNoteEvents = {
     tick: 0,
@@ -29,6 +35,14 @@ export function getNoteOnEvents(track: MidiEvent[]): TrackNoteEvents {
   }, trackNotesEvents)
 }
 
+/**
+ * Create a map of the notes played at a resolution of a semiquaver sextuplet using the tick as the key and notes played
+ * at that tick as the value
+ *
+ * @param {MidiEvent[]} track - Array of events in the MIDI track
+ * @param {TrackEvents} trackEvents - Object containing track information such as semiquaver duration and last tick in song
+ * @returns {TrackNotes} - Map of absolute tick at semiquaver sextuplet resolution to notes played at that tick
+ */
 export function getTrackNotes(track: MidiEvent[], trackEvents: TrackEvents): TrackNotes {
   const { notes: noteOnEvents} = getNoteOnEvents(track)
   const sextuplet = trackEvents.semiQuaver / 3

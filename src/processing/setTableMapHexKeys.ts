@@ -1,14 +1,16 @@
 import {convertToHex} from "../utils";
 
-export function setTableMapHexKeys(tableMap: Map<string, number[]>, tableMapKeys: string[]): Map<string, number[]> {
+/**
+ * Update the table map keys with hexadecimal values based on the index of the table in the table map
+ *
+ * @param {Map<string, number[]>} tableMap - Table map to be updated
+ * @returns {Map<string, number[]>} - Updated table map
+ */
+export function setTableMapHexKeys(tableMap: Map<string, number[]>): Map<string, number[]> {
   return new Map<string, number[]>(
-    tableMapKeys.map((key, index) => {
+    [ ...tableMap.entries() ].map((entry, index) => {
       const hexKey = convertToHex(index)
-      const table = tableMap.get(key)
-      if (typeof table !== "undefined") {
-        return [hexKey, table]
-      }
-      return [hexKey, []]
+      return [hexKey, entry[1]]
     })
   )
 }

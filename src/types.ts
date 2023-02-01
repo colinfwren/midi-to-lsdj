@@ -24,7 +24,7 @@ export type TrackNoteEvents = {
 }
 
 export type TrackSection = {
-  notesPerPhrase: number,
+  notesPerBar: number,
   bars: number,
   tick: number,
   timeSignature: string
