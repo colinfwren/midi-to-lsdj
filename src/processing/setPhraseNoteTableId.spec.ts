@@ -1,54 +1,15 @@
-import {LSDJPhrase} from "../types";
 import { setPhraseNoteTableId } from "./setPhraseNoteTableId";
+import {createNote, createPhrase, HOP_NOTE, TEST_PHRASE_6, TEST_PHRASE_7} from "../test/lsdj";
 
-const phrases: LSDJPhrase[] = [
-  {
-    noteCount: 2,
-    startTick: 0,
-    endTick: 6,
-    key: '1',
-    notes: [
-      {
-        notes: ['C_3'],
-        command: '',
-        triplets: []
-      },
-      {
-        notes: ['D#_3'],
-        command: '',
-        triplets: [3, 5]
-      },
-      {
-        notes: [],
-        command: 'H00',
-        triplets: []
-      },
-    ]
-  },
-  {
-    noteCount: 2,
-    startTick: 6,
-    endTick: 12,
-    key: '2',
-    notes: [
-      {
-        notes: ['C_3'],
-        command: '',
-        triplets: [1, 3]
-      },
-      {
-        notes: ['D#_3'],
-        command: '',
-        triplets: [3, 5]
-      },
-      {
-        notes: [],
-        command: 'H00',
-        triplets: []
-      }
-    ]
-  }
+const phrases = [
+  TEST_PHRASE_6,
+  TEST_PHRASE_7
 ]
+
+const HOP_NOTE_WITH_TABLE = {
+  ...HOP_NOTE,
+  tableId: ''
+}
 
 const trackTablesKeys = [
   'MS0z',
@@ -58,58 +19,23 @@ const trackTablesKeys = [
 describe('setPhraseNoteTableId', () => {
   it('sets the Phrase note table id based on the note delta values in the triplets', () => {
     const expectedResult = [
-      {
-        noteCount: 2,
-        startTick: 0,
-        endTick: 6,
-        key: '1',
-        notes: [
-          {
-            notes: ['C_3'],
-            command: '',
-            triplets: [],
-            tableId: ''
-          },
-          {
-            notes: ['D#_3'],
-            command: 'A01',
-            triplets: [3, 5],
-            tableId: '01'
-          },
-          {
-            notes: [],
-            command: 'H00',
-            triplets: [],
-            tableId: '',
-          },
+      createPhrase(
+        '1',
+        [
+          createNote(['C_3']),
+          createNote(['D#_3'], 'A01', [3, 5], '01'),
+          HOP_NOTE_WITH_TABLE
         ]
-      },
-      {
-        noteCount: 2,
-        startTick: 6,
-        endTick: 12,
-        key: '2',
-        notes: [
-          {
-            notes: ['C_3'],
-            command: 'A00',
-            triplets: [1, 3],
-            tableId: '00'
-          },
-          {
-            notes: ['D#_3'],
-            command: 'A01',
-            triplets: [3, 5],
-            tableId: '01'
-          },
-          {
-            notes: [],
-            command: 'H00',
-            triplets: [],
-            tableId: ''
-          }
-        ]
-      }
+      ),
+      createPhrase(
+        '2',
+        [
+          createNote(['C_3'], 'A00', [1, 3], '00'),
+          createNote(['D#_3'], 'A01', [3, 5], '01'),
+          HOP_NOTE_WITH_TABLE
+        ],
+        6
+      )
     ]
     const result = setPhraseNoteTableId(phrases, trackTablesKeys)
     expect(result).toMatchObject(expectedResult)

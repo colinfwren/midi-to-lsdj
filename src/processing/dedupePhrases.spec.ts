@@ -1,53 +1,11 @@
-import {LSDJNote, LSDJPhrase} from "../types";
-import {dedupePhrases} from "./dedupePhrases";
-
-const testPhrase: LSDJPhrase = {
-  noteCount: 2,
-  startTick: 0,
-  endTick: 2,
-  key: 'QyNfMy1DXzMtLUdfNi0tLUgwMA==',
-  notes: [
-    {
-      notes: ['C#_3', 'C_3'],
-      command: '',
-      triplets: []
-    },
-    {
-      notes: ['G_6'],
-      command: '',
-      triplets: []
-    },
-    {
-      notes: [],
-      command: 'H00',
-      triplets: []
-    }
-  ]
-}
-
-const otherTestPhrase: LSDJPhrase = {
-  noteCount: 1,
-  startTick: 0,
-  endTick: 2,
-  key: 'Rl80LS0tSDAw',
-  notes: [
-    {
-      notes: ['F_4'],
-      command: '',
-      triplets: []
-    },
-    {
-      notes: [],
-      command: 'H00',
-      triplets: []
-    }
-  ]
-}
+import { LSDJNote } from "../types";
+import { dedupePhrases } from "./dedupePhrases";
+import { TEST_PHRASE_1, TEST_PHRASE_2 } from "../test/lsdj";
 
 const phraseMap = new Map<string, LSDJNote[]>(
   [
-  [testPhrase.key, testPhrase.notes],
-  [otherTestPhrase.key, otherTestPhrase.notes]
+  [TEST_PHRASE_1.key, TEST_PHRASE_1.notes],
+  [TEST_PHRASE_2.key, TEST_PHRASE_2.notes]
 ])
 
 describe('dedupePhrases', () => {
@@ -55,11 +13,11 @@ describe('dedupePhrases', () => {
     const expectedResult = [
       {
         key: '00',
-        notes: testPhrase.notes
+        notes: TEST_PHRASE_1.notes
       },
       {
         key: '01',
-        notes: otherTestPhrase.notes
+        notes: TEST_PHRASE_2.notes
       }
     ]
     const result = dedupePhrases(phraseMap)

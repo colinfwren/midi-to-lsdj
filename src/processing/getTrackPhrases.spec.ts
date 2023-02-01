@@ -7,6 +7,7 @@ import {
 } from './getTrackPhrases';
 import {TrackEvents, TrackNotes, TrackPhrase, TrackSection, LSDJTrack} from '../types';
 import {createEndOfTrackEvent, createTempoEvent, createTimeSignatureEvent} from '../test/midiEvents';
+import {createNote, createPhrase, HOP_NOTE} from "../test/lsdj";
 
 const trackEvents: TrackEvents = {
   timeSignatures: [
@@ -354,21 +355,9 @@ describe('getPhrasesForSection', () => {
 describe('getPhrasesNotesAsBase64', () => {
   it('converts the list of notes and commands into a base64 string', () => {
     const testNotes = [
-      {
-        notes: ['C#3', 'C_3'],
-        command: '',
-        triplets: []
-      },
-      {
-        notes: ['G_6'],
-        command: '',
-        triplets: []
-      },
-      {
-        notes: [],
-        command: 'H00',
-        triplets: []
-      }
+      createNote(['C#3', 'C_3']),
+      createNote(['G_6']),
+      HOP_NOTE
     ]
     const result = getPhrasesNotesAsBase64(testNotes)
     expect(result).toBe('QyMzLUNfMy0tIC1HXzYtLSAtLUgwMC0g')
@@ -381,366 +370,99 @@ describe('getPhrasesForTrack', () => {
       chains: [],
       tables: [],
       phrases: [
-          {
-            noteCount: 12,
-            startTick: 0,
-            endTick: 36,
-            key: 'Q18zLS0gLS0tIC1DIzMtLSAtLS0gLURfMy0tIC0tLSAtRCMzLS0gMy0xMi0tLSAtRV8zLS0gLS0tIC1GXzMtLSAtLS0gLS1IMDAtIA==',
-            notes: [
-              {
-                notes: ['C_3'],
-                command: '',
-                triplets: []
-              },
-              {
-                notes: [],
-                command: '',
-                triplets: []
-              },
-              {
-                notes: ['C#3'],
-                command: '',
-                triplets: []
-              },
-              {
-                notes: [],
-                command: '',
-                triplets: []
-              },
-              {
-                notes: ['D_3'],
-                command: '',
-                triplets: []
-              },
-              {
-                notes: [],
-                command: '',
-                triplets: []
-              },
-              {
-                notes: ['D#3'],
-                command: '',
-                triplets: [3, 12]
-              },
-              {
-                notes: [],
-                command: '',
-                triplets: []
-              },
-              {
-                notes: ['E_3'],
-                command: '',
-                triplets: []
-              },
-              {
-                notes: [],
-                command: '',
-                triplets: []
-              },
-              {
-                notes: ['F_3'],
-                command: '',
-                triplets: []
-              },
-              {
-                notes: [],
-                command: '',
-                triplets: []
-              },
-              {
-                notes: [],
-                command: 'H00',
-                triplets: []
-              },
+        createPhrase(
+          'Q18zLS0gLS0tIC1DIzMtLSAtLS0gLURfMy0tIC0tLSAtRCMzLS0gMy0xMi0tLSAtRV8zLS0gLS0tIC1GXzMtLSAtLS0gLS1IMDAtIA==',
+          [
+              createNote(['C_3']),
+              createNote(),
+              createNote(['C#3']),
+              createNote(),
+              createNote(['D_3']),
+              createNote(),
+              createNote(['D#3'], '', [3, 12]),
+              createNote(),
+              createNote(['E_3']),
+              createNote(),
+              createNote(['F_3']),
+              createNote(),
+              HOP_NOTE
             ]
-          },
-        {
-        noteCount: 16,
-        startTick: 36,
-        endTick: 84,
-        key: 'RiMzLS0gLS0tIC1HXzMtLSAtLS0gLUcjMy0tIC0tLSAtQV8zLS0gLS0tIC1BIzMtLSAtLS0gLUJfMy0tIC0tLSAtQ180LS0gLS0tIC1DIzQtLSAtLS0g',
-        notes: [
-          {
-            notes: ['F#3'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['G_3'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['G#3'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['A_3'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['A#3'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['B_3'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['C_4'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['C#4'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          }
-        ]
-      },
-      {
-        noteCount: 16,
-        startTick: 84,
-        endTick: 132,
-        key: 'RF80LS0gLS0tIC1EIzQtLSAtLS0gLUVfNC0tIC0tLSAtRl80LS0gLS0tIC1GIzQtLSAtLS0gLUdfNC0tIC0tLSAtRyM0LS0gLS0tIC1BXzQtLSAtLS0g',
-        notes: [
-          {
-            notes: ['D_4'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['D#4'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['E_4'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['F_4'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['F#4'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['G_4'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['G#4'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['A_4'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          }
-        ]
-      },
-        {
-        noteCount: 16,
-        startTick: 132,
-        endTick: 180,
-        key: 'QSM0LS0gLS0tIC1CXzQtLSAtLS0gLUNfNS0tIC0tLSAtQyM1LS0gLS0tIC1EXzUtLSAtLS0gLUQjNS0tIC0tLSAtRV81LS0gLS0tIC1GXzUtLSAtLS0g',
-        notes: [
-          {
-            notes: ['A#4'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['B_4'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['C_5'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['C#5'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['D_5'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['D#5'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['E_5'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: ['F_5'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          }
-        ]
-      },
-      {
-        noteCount: 2,
-        startTick: 180,
-        endTick: 186,
-        key: 'RiM1LS0gLS0tIC0tSDAwLSA=',
-        notes: [
-          {
-            notes: ['F#5'],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: '',
-            triplets: []
-          },
-          {
-            notes: [],
-            command: 'H00',
-            triplets: []
-          }
-        ]
-      }
+        ),
+        createPhrase(
+          'RiMzLS0gLS0tIC1HXzMtLSAtLS0gLUcjMy0tIC0tLSAtQV8zLS0gLS0tIC1BIzMtLSAtLS0gLUJfMy0tIC0tLSAtQ180LS0gLS0tIC1DIzQtLSAtLS0g',
+          [
+            createNote(['F#3']),
+            createNote(),
+            createNote(['G_3']),
+            createNote(),
+            createNote(['G#3']),
+            createNote(),
+            createNote(['A_3']),
+            createNote(),
+            createNote(['A#3']),
+            createNote(),
+            createNote(['B_3']),
+            createNote(),
+            createNote(['C_4']),
+            createNote(),
+            createNote(['C#4']),
+            createNote()
+          ],
+          36
+        ),
+        createPhrase(
+          'RF80LS0gLS0tIC1EIzQtLSAtLS0gLUVfNC0tIC0tLSAtRl80LS0gLS0tIC1GIzQtLSAtLS0gLUdfNC0tIC0tLSAtRyM0LS0gLS0tIC1BXzQtLSAtLS0g',
+          [
+            createNote(['D_4']),
+            createNote(),
+            createNote(['D#4']),
+            createNote(),
+            createNote(['E_4']),
+            createNote(),
+            createNote(['F_4']),
+            createNote(),
+            createNote(['F#4']),
+            createNote(),
+            createNote(['G_4']),
+            createNote(),
+            createNote(['G#4']),
+            createNote(),
+            createNote(['A_4']),
+            createNote()
+          ],
+          84
+        ),
+        createPhrase(
+          'QSM0LS0gLS0tIC1CXzQtLSAtLS0gLUNfNS0tIC0tLSAtQyM1LS0gLS0tIC1EXzUtLSAtLS0gLUQjNS0tIC0tLSAtRV81LS0gLS0tIC1GXzUtLSAtLS0g',
+          [
+            createNote(['A#4']),
+            createNote(),
+            createNote(['B_4']),
+            createNote(),
+            createNote(['C_5']),
+            createNote(),
+            createNote(['C#5']),
+            createNote(),
+            createNote(['D_5']),
+            createNote(),
+            createNote(['D#5']),
+            createNote(),
+            createNote(['E_5']),
+            createNote(),
+            createNote(['F_5']),
+            createNote()
+          ],
+          132
+        ),
+        createPhrase(
+           'RiM1LS0gLS0tIC0tSDAwLSA=',
+          [
+            createNote(['F#5']),
+            createNote(),
+            HOP_NOTE
+          ],
+          180
+        )
       ]
     }
     const result = getPhrasesForTrack(trackNotes, trackEvents)
