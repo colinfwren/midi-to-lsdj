@@ -1,4 +1,4 @@
-import {LSDJNote, LSDJPhrase} from "../types";
+import {LSDJPhrase} from "../types";
 import {setPhraseHexKeys} from "./setPhraseHexKeys";
 
 const phrase1: LSDJPhrase = {
@@ -50,13 +50,12 @@ const phrases = [
   phrase1,
 ]
 
-const phraseMap = new Map<string, LSDJNote[]>([
-  [phrase1.key, phrase1.notes],
-  [phrase2.key, phrase2.notes],
-  [phrase3.key, phrase3.notes]
-])
 
-const phraseMapKeys = [...phraseMap.keys()]
+const phraseMapKeys = [
+  phrase1.key,
+  phrase2.key,
+  phrase3.key
+]
 
 describe('setPhraseHexKeys', () => {
   it('updates the phrase key with the hexadecimal index of the phrase in the phrase map', () => {
