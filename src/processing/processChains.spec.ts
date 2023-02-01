@@ -1,6 +1,7 @@
 import { processChains } from "./processChains";
 import { LSDJTrack } from "../types";
 import { createPhrase } from "../test/lsdj";
+import {Feature} from "../test/allure";
 
 const track: LSDJTrack = {
   chains: [],
@@ -23,6 +24,13 @@ const expectedTrack: LSDJTrack = {
 }
 
 describe('processChains', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.ChainMapping)
+      .story('Create chains from array of phrases')
+  })
+
   it('Creates an array of the chains in the track', () => {
     expect(processChains(track)).toMatchObject(expectedTrack)
   })

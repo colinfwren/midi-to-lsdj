@@ -1,6 +1,7 @@
 import {LSDJChain, LSDJPhrase} from "../types";
 import {getChainKey, getTrackChains, getChainsAsMap} from "./getTrackChains";
 import { createNote, createPhrase, HOP_NOTE, TEST_PHRASE_1, TEST_PHRASE_2 } from "../test/lsdj";
+import {Feature} from "../test/allure";
 
 const phraseOne: LSDJPhrase = {
   ...TEST_PHRASE_1,
@@ -68,6 +69,13 @@ const testChains = [
 ]
 
 describe('getChainKey', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.ChainMapping)
+      .story('Create a hash representing the chain\'s phrases to help spot duplicates')
+  })
+
   it('creates a base64 string from the list of phrase keys in the chain', () => {
     const result = getChainKey(['1', '2', '3'])
     expect(result).toBe('MS0yLTM=')
@@ -75,6 +83,13 @@ describe('getChainKey', () => {
 })
 
 describe('getTrackChains', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.ChainMapping)
+      .story('Create a map using the hash as the key so only have unique chains')
+  })
+
   it('creates an array of chains from the list of phrases', () => {
     const expectedResult: LSDJChain[] = [
       {
@@ -92,6 +107,13 @@ describe('getTrackChains', () => {
 })
 
 describe('getChainsAsMap', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.ChainMapping)
+      .story('Create a map of unique chains')
+  })
+
   it('creates key value pair based on the base64 hash of the phrases in a chain', () => {
     const expectedResult = new Map<string, string[]>(
       [

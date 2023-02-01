@@ -2,6 +2,7 @@ import { processTables } from "./processTables";
 import {LSDJTrack} from "../types";
 import {getTableSteps} from "./getTableArray";
 import {createNote, createPhrase} from "../test/lsdj";
+import {Feature} from "../test/allure";
 
 const track: LSDJTrack = {
   chains: [],
@@ -49,6 +50,13 @@ const expectedTrack: LSDJTrack = {
 }
 
 describe('processTables', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.TableMapping)
+      .story('Creates an array of tables in the track and updates phrases to call the appropriate table for tuplet notes in phrase')
+  })
+
   it('Creates a table array for triplets in the track phrases and sets the commands on the phrases', () => {
     expect(processTables(track)).toMatchObject(expectedTrack)
   })

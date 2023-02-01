@@ -6,6 +6,7 @@ import {
   createEndOfTrackEvent
 } from "../test/midiEvents";
 import {getNoteOnEvents, getTrackNotes} from "./getTrackNotes";
+import {Feature} from "../test/allure";
 
 const track = [
   createNoteOnEvent(0),
@@ -43,6 +44,13 @@ const trackEvents = {
 }
 
 describe('Getting noteOn events in track', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.MidiParsing)
+      .story('Create an array of when notes are played at absolute tick resolution')
+  })
+
   it('returns noteOn events only', () => {
     const expectedResult = {
       tick: 10,
@@ -71,6 +79,13 @@ describe('Getting noteOn events in track', () => {
 })
 
 describe('Getting absolute notes for track', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.MidiParsing)
+      .story('Create a map of ticks -> notes played at tick')
+  })
+
   it('returns a key/value pair for notes at each 16th note in the track', () => {
     const expectedResult = {
       0: ['C3', 'E3'],

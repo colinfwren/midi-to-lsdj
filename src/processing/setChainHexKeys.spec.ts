@@ -1,6 +1,7 @@
 import {LSDJChain} from "../types";
 import { setChainHexKeys, setChainPhraseHexKeys } from "./setChainHexKeys";
 import {TEST_PHRASE_3, TEST_PHRASE_4, TEST_PHRASE_5} from "../test/lsdj";
+import {Feature} from "../test/allure";
 
 const chain1: LSDJChain = {
   key: '1',
@@ -31,6 +32,13 @@ const chains = [
 ]
 
 describe('setChainHexKeys', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.ChainMapping)
+      .story('Chains use hexadecimal keys/index in line with LSDJ')
+  })
+
   it('Updates the chains with a hexadecimal value representing the index in the chain map', () => {
     const updatedChain1 = {
       ...chain1,
@@ -52,6 +60,13 @@ describe('setChainHexKeys', () => {
 })
 
 describe('setChainPhraseHexKeys', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.PhraseMapping)
+      .story('Chains reference phrases using hexademical keys/index in line with LSDJ')
+  })
+
   it('updates the chains with the hexadecimal value representing the index of the phrase in the phrase map', () => {
     const updatedChain1 = {
       ...chain1,

@@ -27,3 +27,5 @@ jobs:
         run: yarn test
       - name: Test Able To Build
         run: yarn build
+
+# TODO: Add generation of allure across all environments in matrix and publish after build

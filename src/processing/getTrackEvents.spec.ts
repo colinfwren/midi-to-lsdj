@@ -5,6 +5,7 @@ import {
   createTimeSignatureEvent,
 } from "../test/midiEvents";
 import {TrackEvents} from "../types";
+import {Feature} from "../test/allure";
 
 const testTrack = [
   createTempoEvent(0, 120),
@@ -18,6 +19,13 @@ const testTrack = [
 
 
 describe('getTrackEvents', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.MidiParsing)
+      .story('Converts MIDI data into an object of track events such as time signatures changes, tempo changes, when the song ends and the tick value for a 16th note')
+  })
+
   it('counts up the ticks for each event so they can be plotted in absolute time', () => {
     const expectedResult: TrackEvents = {
       timeSignatures: [
