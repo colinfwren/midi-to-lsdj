@@ -29,7 +29,7 @@ jobs:
       - name: Test Able To Build
         run: yarn build
       - name: Save Allure Report As Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: always()
         with:
           name: allure-report-${{ matrix.node-version }}
