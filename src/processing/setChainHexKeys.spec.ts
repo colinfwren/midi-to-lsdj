@@ -1,4 +1,4 @@
-import {LSDJChain, LSDJNote, LSDJPhrase} from "../types";
+import {LSDJChain, LSDJPhrase} from "../types";
 import { setChainHexKeys, setChainPhraseHexKeys } from "./setChainHexKeys";
 
 const phrase1: LSDJPhrase = {
@@ -58,13 +58,11 @@ const chainMap = new Map<string, string[]>([
   [chain2.key, chain2.phrases]
 ])
 
-const phraseMap = new Map<string, LSDJNote[]>([
-  [phrase1.key, phrase1.notes],
-  [phrase2.key, phrase2.notes],
-  [phrase3.key, phrase3.notes]
-])
-
-const phraseMapKeys = [...phraseMap.keys()]
+const phraseMapKeys = [
+  phrase1.key,
+  phrase2.key,
+  phrase3.key
+]
 
 const chains = [
   chain1,

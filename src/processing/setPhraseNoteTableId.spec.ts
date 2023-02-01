@@ -50,12 +50,10 @@ const phrases: LSDJPhrase[] = [
   }
 ]
 
-const trackTables = new Map<string, number[]>([
-  ['MS0z', [1, 3]],
-  ['My01', [3, 5]]
-])
-
-const trackTablesKeys = [ ...trackTables.keys() ]
+const trackTablesKeys = [
+  'MS0z',
+  'My01'
+]
 
 describe('setPhraseNoteTableId', () => {
   it('sets the Phrase note table id based on the note delta values in the triplets', () => {
