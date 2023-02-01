@@ -5,7 +5,7 @@ import {
   getPhrasesNotesAsBase64,
   calculateTripletDelta
 } from './getTrackPhrases';
-import {LSDJPhrase, TrackEvents, TrackNotes, TrackPhrase, TrackSection, LSDJTrack} from '../types';
+import {TrackEvents, TrackNotes, TrackPhrase, TrackSection, LSDJTrack} from '../types';
 import {createEndOfTrackEvent, createTempoEvent, createTimeSignatureEvent} from '../test/midiEvents';
 
 const trackEvents: TrackEvents = {
@@ -58,6 +58,14 @@ const trackSections: TrackSection[] = [
 ]
 
 const trackNotes: TrackNotes = {
+  tick: 0,
+  event: {
+    channel: 1,
+    type: "noteOn",
+    deltaTime: 0,
+    noteNumber: 0,
+    velocity: 1,
+  },
   0: ['C3'],
   1: [],
   2: [],

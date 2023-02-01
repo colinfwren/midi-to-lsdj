@@ -1,7 +1,7 @@
 import {MidiTimeSignatureEvent} from "midi-file";
-import {TimeSignatureValues} from "./types";
+import {LSDJPhrase, TimeSignatureValues} from "./types";
 
-export function getChunksOfSize(arr: any[], size: number): any[] {
+export function getChunksOfSize(arr: LSDJPhrase[], size: number): LSDJPhrase[][] {
   const noOfChunks = Math.ceil(arr.length / size)
   return Array(noOfChunks).fill(0).map((_val, index) => {
     return arr.slice(index * size, index * size + size)
@@ -54,7 +54,7 @@ export function getTimeSignatureinSemiQuavers(timeSignature: MidiTimeSignatureEv
   // }
 }
 
-export function* range(start: number, stop: number, step: number = 1): Generator<number> {
+export function* range(start: number, stop: number, step = 1): Generator<number> {
     if (stop == null) {
         // one param defined
         stop = start;
@@ -72,8 +72,8 @@ export function getTripletKey(notes: number[]): string {
   return buffer.toString('base64')
 }
 
-export function convertToHex(number: any): string {
-  return ("0" + parseInt(number, 10).toString(16).toUpperCase()).slice(-2);
+export function convertToHex(number: number | string): string {
+  return ("0" + parseInt(number.toString(), 10).toString(16).toUpperCase()).slice(-2);
 }
 
 export function formatLSDJNoteName(note: string): string {

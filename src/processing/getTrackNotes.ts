@@ -39,11 +39,9 @@ export function getTrackNotes(track: MidiEvent[], trackEvents: TrackEvents): Tra
       return agg
     }, {} as TrackNotes)
 
-  // @ts-ignore
   noteOnEvents.forEach(({ tick, event}, index) => {
     const nextNote = index != noteOnEvents.length -1 ? noteOnEvents[index + 1] : noteOnEvents[noteOnEvents.length - 1]
-    // @ts-ignore
-    const nextNoteDelta = nextNote.tick - tick
+    const nextNoteDelta = nextNote.tick ? nextNote.tick - tick : 0
     // This doesn't work because unlike the python lib the JS version uses a delta between notes
     if ([0, sextuplet].includes(nextNoteDelta % triplet) && typeof notesAtTick[tick] !== 'undefined') {
       notesAtTick[tick].push(fromMidiSharps((event as MidiNoteOnEvent).noteNumber))

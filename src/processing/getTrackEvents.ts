@@ -1,7 +1,7 @@
-import {MidiEvent} from "midi-file";
+import { MidiEvent } from "midi-file";
 import { TrackEvents } from "../types";
 
-export function getTrackEvents(track: MidiEvent[], ticksPerBeat: number = 480): TrackEvents {
+export function getTrackEvents(track: MidiEvent[], ticksPerBeat = 480): TrackEvents {
   const trackEvents = track.reduce((agg: { tick: number, events: TrackEvents }, midiEvent: MidiEvent) => {
     const tick = agg.tick + midiEvent.deltaTime
     switch(midiEvent.type) {
@@ -54,7 +54,13 @@ export function getTrackEvents(track: MidiEvent[], ticksPerBeat: number = 480): 
     tick: 0,
     events: {
       timeSignatures: [],
-      endOfSong: {} as any,
+      endOfSong: {
+        tick: 0,
+        event: {
+          type: 'endOfTrack',
+          deltaTime: 0,
+        },
+      },
       tempos: [],
       semiQuaver: (ticksPerBeat / 2) / 2
     }

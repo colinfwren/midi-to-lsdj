@@ -1,4 +1,4 @@
-import {TrackEvents, TrackNotes, TrackSection, TrackPhrase, LSDJPhrase, LSDJNote, LSDJTrack} from "../types";
+import {TrackEvents, TrackNotes, TrackSection, TrackPhrase, LSDJNote, LSDJTrack} from "../types";
 import {MidiTimeSignatureEvent} from "midi-file";
 import {distance, interval} from '@tonaljs/core'
 import {getTimeSignatureinSemiQuavers, range, formatLSDJNoteName} from "../utils";
@@ -21,7 +21,7 @@ export function getPhrasesForSection({ bars, tick, notesPerPhrase } : TrackSecti
   return Array(bars).fill(0).map((_val, index) => {
     const startTick = tick + (index * (notesPerPhrase * semiQuaver))
     const endTick = startTick + (notesPerPhrase * semiQuaver)
-    const phraseCount = parseInt(Math.ceil(notesPerPhrase / 16) as any)
+    const phraseCount = parseInt(Math.ceil(notesPerPhrase / 16).toString())
     if (phraseCount === 1) {
       return [
         {

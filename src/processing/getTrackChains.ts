@@ -1,4 +1,4 @@
-import {LSDJChain, LSDJNote, LSDJPhrase} from "../types";
+import {LSDJChain, LSDJPhrase} from "../types";
 import {getChunksOfSize} from "../utils";
 
 export function getChainKey(phraseKeys: string[]): string {

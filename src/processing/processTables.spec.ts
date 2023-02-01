@@ -1,5 +1,5 @@
 import { processTables } from "./processTables";
-import {LSDJPhrase, LSDJTable, LSDJTrack} from "../types";
+import {LSDJTrack} from "../types";
 import {getTableSteps} from "./getTableArray";
 
 const track: LSDJTrack = {

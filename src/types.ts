@@ -13,6 +13,8 @@ export type TrackEvents = {
 }
 
 export type TrackNotes = { // Map<number, string[]>
+  tick: number,
+  event: MidiEvent
   [key: number]: string[]
 }
 

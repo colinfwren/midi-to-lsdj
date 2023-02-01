@@ -7,16 +7,16 @@ import {
 } from "midi-file";
 import { midi }  from "@tonaljs/note";
 
-export function createTempoEvent(deltaTime:number = 0, bpm: number = 120): MidiSetTempoEvent {
+export function createTempoEvent(deltaTime = 0, bpm = 120): MidiSetTempoEvent {
   return {
     deltaTime,
     meta: true,
     type: 'setTempo',
-    microsecondsPerBeat: parseInt((60000 / bpm) as any)
+    microsecondsPerBeat: parseInt((60000 / bpm).toString())
   }
 }
 
-export function createTimeSignatureEvent(deltaTime: number = 0, timeSignature: number[] = [4, 4]): MidiTimeSignatureEvent {
+export function createTimeSignatureEvent(deltaTime = 0, timeSignature: number[] = [4, 4]): MidiTimeSignatureEvent {
   return {
     deltaTime,
     meta: true,
@@ -31,7 +31,7 @@ export function createTimeSignatureEvent(deltaTime: number = 0, timeSignature: n
   }
 }
 
-export function createEndOfTrackEvent(deltaTime: number = 0): MidiEndOfTrackEvent {
+export function createEndOfTrackEvent(deltaTime = 0): MidiEndOfTrackEvent {
   return {
     deltaTime,
     meta: true,
@@ -39,7 +39,7 @@ export function createEndOfTrackEvent(deltaTime: number = 0): MidiEndOfTrackEven
   }
 }
 
-export function createNoteOnEvent(deltaTime: number = 0, note: string = 'C3'): MidiNoteOnEvent {
+export function createNoteOnEvent(deltaTime = 0, note = 'C3'): MidiNoteOnEvent {
   return {
     deltaTime,
     channel: 0,
@@ -49,7 +49,7 @@ export function createNoteOnEvent(deltaTime: number = 0, note: string = 'C3'): M
   }
 }
 
-export function createNoteOffEvent(deltaTime: number = 0, note: string = 'C3'): MidiNoteOffEvent {
+export function createNoteOffEvent(deltaTime = 0, note = 'C3'): MidiNoteOffEvent {
   return {
     deltaTime,
     channel: 0,
