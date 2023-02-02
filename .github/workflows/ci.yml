@@ -78,11 +78,6 @@ jobs:
         with:
           authToken: ${{ secrets.GITHUB_TOKEN }}
           context: 'Test Report'
-          state: 'success',
+          state: 'success'
           sha: ${{ github.event.pull_request.head.sha }}
           target_url: colinfwren.github.io/midi-to-lsdj/${{ github.run_number }}
-
-
-
-
-# TODO: Add generation of allure across all environments in matrix and publish after build
