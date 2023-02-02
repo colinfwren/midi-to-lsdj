@@ -70,15 +70,13 @@ jobs:
         if: always()
         uses: peaceiris/actions-gh-pages@v3
         env:
-          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PUBLISH_BRANCH: gh-pages
           PUBLISH_DIR: allure-history
       - name: Add Allure Report Link to Checks Page
-        if: always()
-        uses: Sibz/github-status-action@v1
+        uses: hkusu/status-create-action@v1
         with:
-          authToken: ${{ secrets.GITHUB_TOKEN }}
+          sha: ${{ github.sha }}
+          state: success
+          target-url: https://colinfwren.github.io/midi-to-lsdj/${{ github.run_number }}
           context: 'Test Report'
-          state: 'success'
-          sha: ${{ github.event.pull_request.head.sha }}
-          target_url: https://colinfwren.github.io/midi-to-lsdj/${{ github.run_number }}
