@@ -1,5 +1,6 @@
 import {MidiTimeSignatureEvent} from "midi-file";
 import {LSDJPhrase, TimeSignatureValues} from "./types";
+import {TimeSignatureEvent} from "@tonejs/midi/dist/Header";
 
 /**
  * Reduce an array pf phrases into an array of sized arrays (i.e. chunks)
@@ -20,12 +21,12 @@ export function getChunksOfSize(arr: LSDJPhrase[], size: number): LSDJPhrase[][]
  *
  * @example
  * // returns { numerator: 18, denominator: 16 }
- * getTimeSignatureInSemiQuavers({ numerator: 9, denominator: 8 })
+ * getTimeSignatureInSemiQuavers({ timeSignature: [9, 8] })
  * @param {MidiTimeSignatureEvent} timeSignature - Time Signature event from MIDI track
  * @returns {TimeSignatureValues} - Object containing the adjusted time signature information
  */
-export function getTimeSignatureinSemiQuavers(timeSignature: MidiTimeSignatureEvent): TimeSignatureValues {
-  const { numerator, denominator } = timeSignature
+export function getTimeSignatureinSemiQuavers(timeSignature: TimeSignatureEvent): TimeSignatureValues {
+  const [ numerator, denominator ] = timeSignature.timeSignature
   switch (denominator) {
     case 8:
       return {

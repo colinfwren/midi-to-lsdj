@@ -1,4 +1,3 @@
-export * from './getTrackEvents'
 export * from './getTrackNotes'
 export * from './getTrackPhrases'
 export * from './getPhrasesAsMap'

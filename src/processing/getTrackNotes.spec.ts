@@ -1,81 +1,82 @@
-import {
-  createNoteOnEvent,
-  createNoteOffEvent,
-  createTempoEvent,
-  createTimeSignatureEvent,
-  createEndOfTrackEvent
-} from "../test/midiEvents";
-import {getNoteOnEvents, getTrackNotes} from "./getTrackNotes";
+import {getTrackNotes} from "./getTrackNotes";
 import {Feature} from "../test/allure";
+import {Midi} from "@tonejs/midi";
+import { note } from '@tonaljs/core'
 
-const track = [
-  createNoteOnEvent(0),
-  createNoteOnEvent(0, 'E3'),
-  createNoteOffEvent(2),
-  createNoteOffEvent(0, 'E3'),
-  createNoteOnEvent(0, 'D#3'),
-  createNoteOffEvent(6, 'D#3'),
-  createNoteOnEvent(0),
-  createNoteOffEvent(2)
-]
-
-const trackEvents = {
-  timeSignatures: [
-    {
-      tick: 0,
-      event: createTimeSignatureEvent(0, [6, 8]),
-    },
-    {
-      tick: 2,
-      event: createTimeSignatureEvent(2, [4, 4]),
-    }
-  ],
-  tempos: [
-    {
-      tick: 0,
-      event: createTempoEvent(0, 120),
-    }
-  ],
-  endOfSong: {
-    tick: 8,
-    event: createEndOfTrackEvent(0)
+const midi = new Midi()
+midi.fromJSON({
+  header: {
+    name: 'Test midi file',
+    tempos: [{
+      ticks: 0,
+      bpm: 120
+    }],
+    timeSignatures: [
+      {
+        ticks: 0,
+        timeSignature: [6, 8]
+      },
+      {
+        ticks: 2,
+        timeSignature: [4, 4]
+      }
+    ],
+    keySignatures: [],
+    meta: [],
+    ppq: 24,
   },
-  semiQuaver: 1
-}
-
-describe('Getting noteOn events in track', () => {
-
-  beforeEach(() => {
-    reporter
-      .feature(Feature.MidiParsing)
-      .story('Create an array of when notes are played at absolute tick resolution')
-  })
-
-  it('returns noteOn events only', () => {
-    const expectedResult = {
-      tick: 10,
+  tracks: [
+    {
+      name: 'Test Track',
+      instrument: {
+        family: 'woodwind',
+        name: 'flute',
+        number: 1
+      },
       notes: [
         {
-          tick: 0,
-          event: track[0]
+          ticks: 0,
+          durationTicks: 2,
+          midi: note('C3').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
         },
         {
-          tick: 0,
-          event: track[1]
+          ticks: 0,
+          durationTicks: 2,
+          midi: note('E3').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
         },
         {
-          tick: 2,
-          event: track[4]
+          ticks: 2,
+          durationTicks: 6,
+          midi: note('D#3').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
         },
         {
-          tick: 8,
-          event: track[6]
+          ticks: 8,
+          durationTicks: 2,
+          midi: note('C3').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
         }
-      ]
+      ],
+      channel: 1,
+      controlChanges: {},
+      pitchBends: [],
+      endOfTrackTicks: 10
     }
-    const result = getNoteOnEvents(track)
-    expect(result).toMatchObject(expectedResult)
-  })
+  ]
 })
 
 describe('Getting absolute notes for track', () => {
@@ -92,17 +93,9 @@ describe('Getting absolute notes for track', () => {
       2: ['D#3'],
       4: [],
       6: [],
-      8: ['C3'],
-      10: [],
+      8: ['C3']
     }
-    const result = getTrackNotes(track, {
-      ...trackEvents,
-      semiQuaver: 6,
-      endOfSong: {
-        ...trackEvents.endOfSong,
-        tick: 12
-      }
-    })
+    const result = getTrackNotes(midi, 0)
     expect(result).toMatchObject(expectedResult)
   })
 })
