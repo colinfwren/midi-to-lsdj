@@ -1,7 +1,6 @@
 import { readFileSync} from 'fs'
-import {MidiData, parseMidi, MidiEvent} from "midi-file";
+import { Midi } from '@tonejs/midi'
 import {
-  getTrackEvents,
   getTrackNotes,
   getPhrasesForTrack,
   processTables,
@@ -12,31 +11,28 @@ import { pipe } from "./utils";
 import {LSDJTrack} from "./types";
 
 /**
- * Load file from file system and convert it into a MIDIData object
+ * Load file from file system and convert it into a Midi instance
  *
  * @param {string} filePath - Path to the file to load
- * @returns {MidiData} - Data from parsed Midi file
+ * @returns {Midi} - Data from parsed Midi file
  */
-export function readMidiFile(filePath: string): MidiData {
+export function readMidiFile(filePath: string): Midi {
   const data = readFileSync(filePath)
-  return parseMidi(data)
+  return new Midi(data)
 }
 
 /**
- * Convert a track of MidiEvents into a LSDJ track that can be used to program that track's notes into LSDJ
+ * Convert a Midi Track into a LSDJ track that can be used to program that track's notes into LSDJ
  *
- * @param {MidiEvent[]} track - Track from MIDI file
- * @param {number} ticksPerBeat - Number of ticks per quarter note in MIDI file
+ * @param {Midi} data - Midi instance
+ * @param {number} trackIndex - Index of the track in the Midi instance to process
  * @returns {LSDJTrack} - Chains, Phrases and Tables to program into LSDJ
  */
-export function processTrack(track: MidiEvent[], ticksPerBeat: number): LSDJTrack {
-  // Get track information TODO: sort out time sig changes properly with ticks
-  const events = getTrackEvents(track, ticksPerBeat)
-  // Get the notes for track
-  const notes = getTrackNotes(track, events)
+export function processTrack(data: Midi, trackIndex: number): LSDJTrack {
+  const notes = getTrackNotes(data, trackIndex)
   return pipe<LSDJTrack>(
     processTables,
     processChains,
     processPhrases
-  )(getPhrasesForTrack(notes, events))
+  )(getPhrasesForTrack(notes, data))
 }

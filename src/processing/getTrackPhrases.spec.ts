@@ -5,38 +5,361 @@ import {
   getPhrasesNotesAsBase64,
   calculateTripletDelta
 } from './getTrackPhrases';
-import {TrackEvents, TrackNotes, TrackPhrase, TrackSection, LSDJTrack} from '../types';
-import {createEndOfTrackEvent, createTempoEvent, createTimeSignatureEvent} from '../test/midiEvents';
+import {TrackNotes, TrackPhrase, TrackSection, LSDJTrack} from '../types';
 import {createNote, createPhrase, HOP_NOTE} from "../test/lsdj";
 import {Feature} from "../test/allure";
+import {Midi} from "@tonejs/midi";
+import {note} from "@tonaljs/core";
 
-const trackEvents: TrackEvents = {
-  timeSignatures: [
-    {
-      tick: 0,
-      event: createTimeSignatureEvent(0, [6, 8])
-    },
-    {
-      tick: 36,
-      event: createTimeSignatureEvent(0, [4, 4])
-    },
-    {
-      tick: 132,
-      event: createTimeSignatureEvent(0, [9, 8])
-    }
-  ],
-  tempos: [
-    {
-      tick: 0,
-      event: createTempoEvent(0, 120)
-    }
-  ],
-  endOfSong: {
-    tick: 186,
-    event: createEndOfTrackEvent(0)
+const midi = new Midi()
+midi.fromJSON({
+  header: {
+    name: 'Test midi file',
+    tempos: [{
+      ticks: 0,
+      bpm: 120
+    }],
+    timeSignatures: [
+      {
+        ticks: 0,
+        timeSignature: [6, 8]
+      },
+      {
+        ticks: 36,
+        timeSignature: [4, 4]
+      },
+      {
+        ticks: 132,
+        timeSignature: [9, 8]
+      }
+    ],
+    keySignatures: [],
+    meta: [],
+    ppq: 12,
   },
-  semiQuaver: 3,
-}
+  tracks: [
+    {
+      name: 'Test Track',
+      instrument: {
+        family: 'woodwind',
+        name: 'flute',
+        number: 1
+      },
+      notes: [
+        {
+          ticks: 0,
+          durationTicks: 2,
+          midi: note('C3').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 6,
+          durationTicks: 2,
+          midi: note('C#3').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 12,
+          durationTicks: 2,
+          midi: note('D3').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 18,
+          durationTicks: 2,
+          midi: note('D#3').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 19,
+          durationTicks: 2,
+          midi: note('F#3').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 20,
+          durationTicks: 2,
+          midi: note('D#4').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 24,
+          durationTicks: 2,
+          midi: note('E3').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 30,
+          durationTicks: 2,
+          midi: note('F3').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 36,
+          durationTicks: 2,
+          midi: note('F#3').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 42,
+          durationTicks: 2,
+          midi: note('G3').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 48,
+          durationTicks: 2,
+          midi: note('G#3').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 54,
+          durationTicks: 2,
+          midi: note('A3').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 60,
+          durationTicks: 2,
+          midi: note('A#3').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 66,
+          durationTicks: 2,
+          midi: note('B3').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 72,
+          durationTicks: 2,
+          midi: note('C4').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 78,
+          durationTicks: 2,
+          midi: note('C#4').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 84,
+          durationTicks: 2,
+          midi: note('D4').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 90,
+          durationTicks: 2,
+          midi: note('D#4').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 96,
+          durationTicks: 2,
+          midi: note('E4').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 102,
+          durationTicks: 2,
+          midi: note('F4').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 108,
+          durationTicks: 2,
+          midi: note('F#4').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 114,
+          durationTicks: 2,
+          midi: note('G4').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 120,
+          durationTicks: 2,
+          midi: note('G#4').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 126,
+          durationTicks: 2,
+          midi: note('A4').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 132,
+          durationTicks: 2,
+          midi: note('A#4').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 138,
+          durationTicks: 2,
+          midi: note('B4').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 144,
+          durationTicks: 2,
+          midi: note('C5').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 150,
+          durationTicks: 2,
+          midi: note('C#5').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 156,
+          durationTicks: 2,
+          midi: note('D5').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 162,
+          durationTicks: 2,
+          midi: note('D#5').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 168,
+          durationTicks: 2,
+          midi: note('E5').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 174,
+          durationTicks: 2,
+          midi: note('F5').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 180,
+          durationTicks: 2,
+          midi: note('F#5').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+        {
+          ticks: 186,
+          durationTicks: 0,
+          midi: note('G5').midi as number,
+          velocity: 0,
+          time: 0,
+          name: '',
+          duration: 0,
+        },
+      ],
+      channel: 1,
+      controlChanges: {},
+      pitchBends: [],
+      endOfTrackTicks: 186
+    }
+  ]
+})
 
 const trackSections: TrackSection[] = [
   {
@@ -286,7 +609,7 @@ describe('getTrackSections', () => {
         timeSignature: '18/16'
       }
     ]
-    const result = getTrackSections(trackEvents)
+    const result = getTrackSections(midi)
     expect(result).toMatchObject(expectedResult)
   })
 })
@@ -494,7 +817,7 @@ describe('getPhrasesForTrack', () => {
         )
       ]
     }
-    const result = getPhrasesForTrack(trackNotes, trackEvents)
+    const result = getPhrasesForTrack(trackNotes, midi)
     expect(result).toMatchObject(expectedResult)
   })
 })
@@ -542,3 +865,11 @@ describe('calculateTripletDelta', () => {
     expect(calculateTripletDelta(root, triplet)).toBe(delta)
   })
 })
+
+// 0 - 36 = 6, 8
+// 36 - 132 = 4, 4
+// 132 = 9, 8
+
+// 0 - eB = 0 / 1 (0), eM = 0 / 6 / 2 (0), m = 0 + 0
+// 1 - eB = 36 / 1 (36), eM = 36 / 6 / 2 (3), m = 3 + 0
+// 2 - eB = 96 / 1 (96), eM = 96 / 4 / 1 (24), m = 24 + 3

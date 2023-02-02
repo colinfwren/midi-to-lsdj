@@ -1,26 +1,28 @@
-import {TrackEvents, TrackNotes, TrackSection, TrackPhrase, LSDJNote, LSDJTrack} from "../types";
-import {MidiTimeSignatureEvent} from "midi-file";
+import {TrackNotes, TrackSection, TrackPhrase, LSDJNote, LSDJTrack} from "../types";
 import {distance, interval} from '@tonaljs/core'
 import {getTimeSignatureinSemiQuavers, range, formatLSDJNoteName} from "../utils";
+import { Midi} from "@tonejs/midi";
 
 /**
  * Create an array of sections in the track based on the time signature changes in the track. Time signatures are used
  * as this will determine the number of notes in a bar and as LSDJ support a maximum of 16 semiquavers per bar there
  * may have to be special processing for 'interesting' time stamps
  *
- * @param {TrackEvents} trackEvents - Object containing the time signature changes in absolute tick resolution
+ * @param {Midi} midiData - Data for the Midi file
  * @returns {TrackSection} - Array of objects detailing when each time signature begins, notes per phrase and duration
  */
-export function getTrackSections(trackEvents: TrackEvents): TrackSection[] {
-  return trackEvents.timeSignatures.map((timeSignature, index) => {
-    const { numerator, denominator } = getTimeSignatureinSemiQuavers(timeSignature.event as MidiTimeSignatureEvent)
-    const nextTimeSignature = index != trackEvents.timeSignatures.length - 1 ? trackEvents.timeSignatures[index + 1] : trackEvents.endOfSong
-    const timeSignatureLength = nextTimeSignature.tick - timeSignature.tick
+export function getTrackSections(midiData: Midi): TrackSection[] {
+  const trackHeader = midiData.header
+  const semiquaver = (trackHeader.ppq / 2) / 2
+  return trackHeader.timeSignatures.map((timeSignature, index) => {
+    const { numerator, denominator } = getTimeSignatureinSemiQuavers(timeSignature)
+    const nextTimeSignatureTick = index != trackHeader.timeSignatures.length - 1 ? trackHeader.timeSignatures[index + 1].ticks : midiData.durationTicks
+    const timeSignatureLength = nextTimeSignatureTick - timeSignature.ticks
     return {
-      tick: timeSignature.tick,
+      tick: timeSignature.ticks,
       timeSignature: `${numerator}/${denominator}`,
       notesPerBar: numerator,
-      bars: Math.ceil(timeSignatureLength / (numerator * trackEvents.semiQuaver))
+      bars: Math.ceil(timeSignatureLength / (numerator * semiquaver))
     }
   })
 }
@@ -101,20 +103,21 @@ export function calculateTripletDelta(root: string, triplet: string): number {
  * intervals and if there are triplets/sextuplets then create a transpose delta so tables can be created to handle this
  *
  * @param {TrackNotes} trackNotes - Map of the ticks in the track to the notes played on that tick
- * @param {TrackEvents} trackEvents - Track information such as time signature changes and semiquaver tick duration
+ * @param {Midi} midiData - Data from Midi file
  * @returns {LSDJTrack} - Track for LSDJ containing the phrases that make up the track
  */
-export function getPhrasesForTrack(trackNotes: TrackNotes, trackEvents: TrackEvents): LSDJTrack {
-  const sextuplet = trackEvents.semiQuaver / 3
-  const trackSections = getTrackSections(trackEvents)
+export function getPhrasesForTrack(trackNotes: TrackNotes, midiData: Midi): LSDJTrack {
+  const semiquaver = midiData.header.ppq / 2 / 2
+  const sextuplet = semiquaver / 3
+  const trackSections = getTrackSections(midiData)
   return {
     chains: [],
     phrases: trackSections.map((section) => {
-      return getPhrasesForSection(section, trackEvents.semiQuaver).map((trackPhrase) => {
+      return getPhrasesForSection(section, semiquaver).map((trackPhrase) => {
         const notes = trackPhrase.noteIndexes.map((noteIndex) => {
           const tripletIndexes = [noteIndex + sextuplet, noteIndex + (sextuplet * 2)]
           const triplets = tripletIndexes.map((tripletIndex) => {
-            const triplet = trackNotes[tripletIndex]
+            const triplet = trackNotes[tripletIndex] ? trackNotes[tripletIndex] : []
             if (triplet.length > 0) {
               return calculateTripletDelta(trackNotes[noteIndex][0], triplet[0])
             }

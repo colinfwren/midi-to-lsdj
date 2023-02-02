@@ -1,11 +1,8 @@
 import {
   MidiEndOfTrackEvent,
-  MidiNoteOffEvent,
-  MidiNoteOnEvent,
   MidiSetTempoEvent,
   MidiTimeSignatureEvent
 } from "midi-file";
-import { midi }  from "@tonaljs/note";
 
 /**
  * Create a Midi Tempo Event for use in testing
@@ -56,39 +53,5 @@ export function createEndOfTrackEvent(deltaTime = 0): MidiEndOfTrackEvent {
     deltaTime,
     meta: true,
     type: 'endOfTrack'
-  }
-}
-
-/**
- * Create Midi Note On Event for use in testing
- *
- * @param {number} deltaTime - delta relative to last Midi Event
- * @param {string} note - Note being activated in event
- * @returns {MidiNoteOnEvent} - Midi Note on event for test
- */
-export function createNoteOnEvent(deltaTime = 0, note = 'C3'): MidiNoteOnEvent {
-  return {
-    deltaTime,
-    channel: 0,
-    type: 'noteOn',
-    noteNumber: midi(note) ?? 127,
-    velocity: 48
-  }
-}
-
-/**
- * Create Midi Note off Event for use in testing
- *
- * @param {number} deltaTime - delta relative to last Midi Event
- * @param {string} note - Note being deactivated in event
- * @returns {MidiNoteOffEvent} - Midi Note Off event for test
- */
-export function createNoteOffEvent(deltaTime = 0, note = 'C3'): MidiNoteOffEvent {
-  return {
-    deltaTime,
-    channel: 0,
-    type: 'noteOff',
-    noteNumber: midi(note) ?? 127,
-    velocity: 48
   }
 }
