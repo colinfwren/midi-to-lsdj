@@ -1,5 +1,6 @@
 import { setPhraseNoteTableId } from "./setPhraseNoteTableId";
 import {createNote, createPhrase, HOP_NOTE, TEST_PHRASE_6, TEST_PHRASE_7} from "../test/lsdj";
+import {Feature} from "../test/allure";
 
 const phrases = [
   TEST_PHRASE_6,
@@ -17,6 +18,13 @@ const trackTablesKeys = [
 ]
 
 describe('setPhraseNoteTableId', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.TableMapping)
+      .story('Phrases are updated to reference tables using hexadecimal key/index inline with LSDJ')
+  })
+
   it('sets the Phrase note table id based on the note delta values in the triplets', () => {
     const expectedResult = [
       createPhrase(

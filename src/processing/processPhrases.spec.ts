@@ -2,6 +2,7 @@ import { processPhrases } from "./processPhrases";
 import {LSDJNote, LSDJTrack} from "../types";
 import {createNote, createPhrase} from "../test/lsdj";
 import {getPhrasesNotesAsBase64} from "./getTrackPhrases";
+import {Feature} from "../test/allure";
 
 const notes1: LSDJNote[] = [
   createNote(['G_3']),
@@ -110,6 +111,13 @@ const expectedTrack: LSDJTrack = {
 }
 
 describe('processPhrases', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.PhraseMapping)
+      .story('Removes duplicate phrases from phrase list and updates chains to point to single instance of duplicated chain')
+  })
+
   it('Removes duplicate phrases and updates the chain map to point duplicates to the first instance', () => {
     expect(processPhrases(track)).toMatchObject(expectedTrack)
   })

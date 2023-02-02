@@ -1,6 +1,7 @@
 
 import {setPhraseHexKeys} from "./setPhraseHexKeys";
 import { TEST_PHRASE_3, TEST_PHRASE_4, TEST_PHRASE_5} from "../test/lsdj";
+import {Feature} from "../test/allure";
 
 const phrases = [
   TEST_PHRASE_3,
@@ -17,6 +18,13 @@ const phraseMapKeys = [
 ]
 
 describe('setPhraseHexKeys', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.PhraseMapping)
+      .story('Phrases use hexademical key/index in line with LSDJ')
+  })
+
   it('updates the phrase key with the hexadecimal index of the phrase in the phrase map', () => {
     const expectedResult = [
       {

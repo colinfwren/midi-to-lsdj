@@ -8,6 +8,7 @@ import {
 import {TrackEvents, TrackNotes, TrackPhrase, TrackSection, LSDJTrack} from '../types';
 import {createEndOfTrackEvent, createTempoEvent, createTimeSignatureEvent} from '../test/midiEvents';
 import {createNote, createPhrase, HOP_NOTE} from "../test/lsdj";
+import {Feature} from "../test/allure";
 
 const trackEvents: TrackEvents = {
   timeSignatures: [
@@ -257,6 +258,13 @@ const trackNotes: TrackNotes = {
 }
 
 describe('getTrackSections', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.MidiParsing)
+      .story('Create a list of sections in the track based on the time signature changes so can create phrase array')
+  })
+
   it('creates an array of sections for each time signature in the track', () => {
     const expectedResult: TrackSection[] = [
       {
@@ -284,6 +292,13 @@ describe('getTrackSections', () => {
 })
 
 describe('getPhrasesForSection', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.PhraseMapping)
+      .story('Create phrase array based on number of 16th notes per bar as defined by time signature')
+  })
+
   it('creates an array of phrases for a 6/8 time signature', () => {
     const expectedResult: TrackPhrase[] = [
       {
@@ -353,6 +368,13 @@ describe('getPhrasesForSection', () => {
 })
 
 describe('getPhrasesNotesAsBase64', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.PhraseMapping)
+      .story('Create hash for a phrase based on the notes, triplets and tables in the phrase so can identify duplicate phrases')
+  })
+
   it('converts the list of notes and commands into a base64 string', () => {
     const testNotes = [
       createNote(['C#3', 'C_3']),
@@ -365,6 +387,13 @@ describe('getPhrasesNotesAsBase64', () => {
 })
 
 describe('getPhrasesForTrack', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.TrackStructure)
+      .story('Creates a new LSDJ Track object with initial phrases')
+  })
+
   it('creates an array of LSDJ phrases for a track', () => {
     const expectedResult: LSDJTrack = {
       chains: [],
@@ -498,6 +527,13 @@ const deltaEdgescases = [
 ]
 
 describe('calculateTripletDelta', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.TableMapping)
+      .story('Calculate the delta between notes in a tuplet so can convert into transpose command in table')
+  })
+
   it('returns the number of semi-tones between the root note and the triplet note', () => {
     const result = calculateTripletDelta('A#3', 'C#3')
     expect(result).toBe(-9)
