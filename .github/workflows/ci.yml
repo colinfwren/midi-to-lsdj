@@ -38,6 +38,7 @@ jobs:
   publish-check-results:
     name: 'Publish Check Results'
     runs-on: ubuntu-latest
+    needs: run-checks
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -80,4 +81,4 @@ jobs:
           context: 'Test Report'
           state: 'success'
           sha: ${{ github.event.pull_request.head.sha }}
-          target_url: colinfwren.github.io/midi-to-lsdj/${{ github.run_number }}
+          target_url: https://colinfwren.github.io/midi-to-lsdj/${{ github.run_number }}
