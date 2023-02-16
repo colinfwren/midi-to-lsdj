@@ -19,7 +19,7 @@ export function setPhraseNoteTableId(phrases: LSDJPhrase[], tableMapKeys: string
         return {
           ...note,
           tableId: tableHex,
-          command: tableHex === '' ? note.command : `A${tableHex}`
+          command: tableHex !== '' && !['T', 'H', 'K'].includes(note.command.charAt(0)) ? `A${tableHex}` : note.command
         }
       })
     }

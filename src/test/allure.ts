@@ -6,6 +6,7 @@ export enum Feature {
   TableMapping = 'Table Mapping',
   PhraseMapping = 'Phrase Mapping',
   ChainMapping = 'Chain Mapping',
+  CommandMapping = 'Command Mapping'
 }
 
 declare global {

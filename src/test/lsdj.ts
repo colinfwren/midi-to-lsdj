@@ -47,6 +47,8 @@ export function createNote(notes: string[] = [], command = '', triplets: number[
 
 export const HOP_NOTE = createNote([], 'H00')
 
+export const KILL_NOTE = createNote([], 'K00')
+
 export const TEST_PHRASE_1 = createPhrase(
   'QyNfMy1DXzMtLUdfNi0tLUgwMA==',
   [
@@ -104,4 +106,22 @@ export const TEST_PHRASE_7 = createPhrase(
     HOP_NOTE
   ],
   6
+)
+
+export const TEST_PHRASE_8 = createPhrase(
+  '1',
+  [
+    createNote(['C_3']),
+    createNote(['D#_3'], 'TB4', [3, 5]),
+    HOP_NOTE
+  ]
+)
+
+export const TEST_PHRASE_9 = createPhrase(
+  '1',
+  [
+    createNote(['C_3']),
+    KILL_NOTE,
+    HOP_NOTE
+  ]
 )
