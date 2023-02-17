@@ -3,7 +3,7 @@ import {
   getPhrasesForTrack,
   getTrackSections,
   getPhrasesNotesAsBase64,
-  calculateTripletDelta
+  calculateNoteDelta
 } from './getTrackPhrases';
 import {TrackNotes, TrackPhrase, TrackSection, LSDJTrack} from '../types';
 import {createNote, createPhrase, HOP_NOTE} from "../test/lsdj";
@@ -391,7 +391,7 @@ const trackNotes: TrackNotes = {
     noteNumber: 0,
     velocity: 1,
   },
-  0: ['C3'],
+  0: ['C3', 'D#3', 'G3'],
   1: [],
   2: [],
   3: [],
@@ -723,9 +723,9 @@ describe('getPhrasesForTrack', () => {
       tables: [],
       phrases: [
         createPhrase(
-          'Q18zLS0gLS0tIC1DIzMtLSAtLS0gLURfMy0tIC0tLSAtRCMzLS0gMy0xMi0tLSAtRV8zLS0gLS0tIC1GXzMtLSAtLS0gLS1IMDAtIA==',
+          'Q18zLUQjMy1HXzMtQzM3LSAtLS0gLUMjMy0tIC0tLSAtRF8zLS0gLS0tIC1EIzMtLSAzLTEyLS0tIC1FXzMtLSAtLS0gLUZfMy0tIC0tLSAtLUgwMC0g',
           [
-              createNote(['C_3']),
+              createNote(['C_3', 'D#3', 'G_3'], 'C37'),
               createNote(),
               createNote(['C#3']),
               createNote(),
@@ -858,11 +858,11 @@ describe('calculateTripletDelta', () => {
   })
 
   it('returns the number of semi-tones between the root note and the triplet note', () => {
-    const result = calculateTripletDelta('A#3', 'C#3')
+    const result = calculateNoteDelta('A#3', 'C#3')
     expect(result).toBe(-9)
   })
   it.each(deltaEdgescases)('compensates for the freq chart starting at F - ${name}', ({ triplet, root, delta}) => {
-    expect(calculateTripletDelta(root, triplet)).toBe(delta)
+    expect(calculateNoteDelta(root, triplet)).toBe(delta)
   })
 })
 
