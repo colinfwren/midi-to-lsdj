@@ -92,7 +92,7 @@ export function getPhrasesNotesAsBase64(notes: LSDJNote[]): string {
  * @param {string} triplet - The note value of the triplet note
  * @returns {number} - The distance between the two notes
  */
-export function calculateTripletDelta(root: string, triplet: string): number {
+export function calculateNoteDelta(root: string, triplet: string): number {
   const intervalName = distance(root, triplet)
   const intervalObj = interval(intervalName)
   return intervalObj.empty ? 0 : intervalObj.semitones
@@ -120,7 +120,7 @@ export function getPhrasesForTrack(trackNotes: TrackNotes, midiData: Midi): LSDJ
           const triplets = tripletIndexes.map((tripletIndex) => {
             const triplet = trackNotes[tripletIndex] ? trackNotes[tripletIndex] : []
             if (triplet.length > 0) {
-              return calculateTripletDelta(trackNotes[noteIndex][0], triplet[0])
+              return calculateNoteDelta(trackNotes[noteIndex][0], triplet[0])
             }
             return []
           }).flat()

@@ -1,7 +1,14 @@
 import {Feature} from "../test/allure";
 import {Midi} from "@tonejs/midi";
 import {note} from "@tonaljs/core";
-import {convertTempoToHex, getNoteCommand, NoteInfo, processTempoCommand} from "./getNoteCommand";
+import {
+  convertChordToHex,
+  convertTempoToHex,
+  getNoteCommand,
+  NoteInfo,
+  processChordCommand,
+  processTempoCommand
+} from "./getNoteCommand";
 
 const baseTrack = {
   header: {
@@ -123,6 +130,50 @@ describe('Setting tempo command for a note that falls on a tempo change', () => 
   })
 })
 
+describe('Setting chord command for notes that have more than one note and no higher priority commands', () => {
+  it('Returns a chord command when there is more than one note and no higher priority commands', () => {
+    const input: NoteInfo = {
+      noteIndex: 0,
+      midiData: midi,
+      notes: ['C3', 'D#3', 'G3'],
+      hasTuplet: false,
+      command: ''
+    }
+    const expected = {
+      ...input,
+      command: 'C37'
+    }
+    expect(processChordCommand(input)).toMatchObject(expected)
+  })
+  it('Returns an empty command when one note and no higher priority commands', () => {
+    const input: NoteInfo = {
+      noteIndex: 0,
+      midiData: midi,
+      notes: ['C3'],
+      hasTuplet: false,
+      command: ''
+    }
+    expect(processChordCommand(input)).toMatchObject(input)
+  })
+  it.each([
+    { command: 'H00', commandName: 'Hop'},
+    { command: 'T28', commandName: 'Tempo'},
+    { command: 'K00', commandName: 'Kill Note'},
+    { command: 'A00', commandName: 'Table'},
+    { command: 'D01', commandName: 'Delay'},
+    { command: 'R00', commandName: 'Retrigger'}
+  ])('Returns ${commandName} command when set', ({ command }) => {
+    const input: NoteInfo = {
+      noteIndex: 0,
+      midiData: midi,
+      notes: ['C3', 'D#3', 'G3'],
+      hasTuplet: false,
+      command
+    }
+    expect(processChordCommand(input)).toMatchObject(input)
+  })
+})
+
 describe('Getting command for note at tick', () => {
 
   beforeEach(() => {
@@ -134,6 +185,9 @@ describe('Getting command for note at tick', () => {
 
   it('Returns tempo command if tempo change happens at note tick', () => {
     expect(getNoteCommand(36, tempoChangeMidi, ['F#3'], false)).toBe('TB4')
+  })
+  it('Returns chord command if more than one note at note tick', () => {
+    expect(getNoteCommand(0, midi, ['C3', 'D#3', 'G3'], false)).toBe('C37')
   })
   it('Returns empty string if no events happen at note tick', () => {
     expect(getNoteCommand(36, midi, ['F#3'], false)).toBe('')
@@ -169,5 +223,17 @@ describe('Converting MIDI Tempo BPM to LSDJ Tempo Hex value', () => {
 
   it('Returns hex value of 27 for BPM higher than 295', () => {
     expect(convertTempoToHex(9001)).toBe('27')
+  })
+})
+
+describe('Converting array of notes into a LSDJ chord hex', () => {
+  it('Only returns a hex value for three note chords', () => {
+    expect(convertChordToHex(['C3', 'D#3', 'G3', 'A#3'])).toBe('37')
+  })
+  it('Pads a two note chord with the base note', () => {
+    expect(convertChordToHex(['C3', 'D#3'])).toBe('30')
+  })
+  it('Caps chord range at 15 semitones (F in hex)', () => {
+    expect(convertChordToHex(['C3', 'C4', 'C5'])).toBe('CF')
   })
 })

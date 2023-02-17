@@ -1,5 +1,8 @@
 import {Midi} from "@tonejs/midi";
-import { convertToHex } from "../utils";
+import {convertToHex, pipe} from "../utils";
+import {note as tonalNote} from "@tonaljs/core";
+import { fromMidi } from "@tonaljs/note";
+import {calculateNoteDelta} from "./getTrackPhrases";
 
 export type NoteInfo = {
   noteIndex: number,
@@ -47,6 +50,43 @@ export function processTempoCommand(noteInfo: NoteInfo): NoteInfo {
   return noteInfo
 }
 
+/**
+ * Calculate the delta between the notes in a chord and then using LSDJ's chord rules return the appropriate hex value
+ * for use with the chord command
+ *
+ * @param {string[]} notes - Notes in the chord
+ * @returns {string} - The hex value that represents the chord based on LSDJ's chord rules
+ */
+export function convertChordToHex(notes: string[]): string {
+  const [baseNote, ...rest] = notes
+    .map((note) => tonalNote(note).midi as number)
+    .sort((a, b) => a-b)
+    .map((midiNote) => fromMidi(midiNote))
+  const arpNotes =  [...rest, baseNote]
+  const deltas = [
+    calculateNoteDelta(baseNote, arpNotes[0]),
+    calculateNoteDelta(baseNote, arpNotes[1])
+  ].map((delta) => delta > 15 ? 15 : delta)
+  return `${convertToHex(deltas[0]).charAt(1)}${convertToHex(deltas[1]).charAt(1)}`
+}
+
+/**
+ * Add a chord command if there is more than one note and there's not alread a Hop, Tempo, Kill, Table, Delay, Retrigger
+ * command on the note
+ *
+ * @param {NoteInfo} noteInfo - Information about the note used to process the chord command
+ * @returns {NoteInfo} - new NoteInfo instance with chord command if applicable
+ */
+export function processChordCommand(noteInfo: NoteInfo): NoteInfo {
+  const { notes, command } = noteInfo
+  if (['H', 'T', 'K', 'A', 'D', 'R'].includes(command.charAt(0)) || notes.length < 2) return noteInfo
+  const chordAsHex = convertChordToHex(notes)
+  return {
+    ...noteInfo,
+    command: `C${chordAsHex}`
+  }
+}
+
 // TODO: Add new command processors here, check value of NoteInfo.command before processing, add processor for table when get to lower priority processors
 
 /**
@@ -59,6 +99,8 @@ export function processTempoCommand(noteInfo: NoteInfo): NoteInfo {
  * @returns {string} The appropriate command or empty string if no command to be set
  */
 export function getNoteCommand(noteIndex: number, midiData: Midi, notes: string[], hasTuplet: boolean): string {
-  // TODO: When add more processors add pipe()
-  return processTempoCommand({ noteIndex, midiData, notes, hasTuplet, command: ''}).command
+  return pipe(
+    processTempoCommand,
+    processChordCommand
+  )({ noteIndex, midiData, notes, hasTuplet, command: ''}).command
 }
