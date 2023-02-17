@@ -1,7 +1,7 @@
 import {Feature} from "../test/allure";
 import {Midi} from "@tonejs/midi";
 import {note} from "@tonaljs/core";
-import {getNoteCommand, NoteInfo, processTempoCommand} from "./getNoteCommand";
+import {convertTempoToHex, getNoteCommand, NoteInfo, processTempoCommand} from "./getNoteCommand";
 
 const baseTrack = {
   header: {
@@ -124,10 +124,50 @@ describe('Setting tempo command for a note that falls on a tempo change', () => 
 })
 
 describe('Getting command for note at tick', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.CommandMapping)
+      .story('Note Commands')
+      .description('Set command for notes based on if there is a track event at that tick')
+  })
+
   it('Returns tempo command if tempo change happens at note tick', () => {
     expect(getNoteCommand(36, tempoChangeMidi, ['F#3'], false)).toBe('TB4')
   })
   it('Returns empty string if no events happen at note tick', () => {
     expect(getNoteCommand(36, midi, ['F#3'], false)).toBe('')
+  })
+})
+
+describe('Converting MIDI Tempo BPM to LSDJ Tempo Hex value', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.CommandMapping)
+      .story('Tempo Hex Value')
+      .description("Set Tempo Hex value based on LSDJ's BPM rules")
+  })
+
+  it.each([
+    { bpm: 40, hex: '28'},
+    { bpm: 255, hex: 'FF'}
+  ])('Returns hex value for BPM falling between 40-255 range ${bpm}', ({ bpm, hex}) => {
+    expect(convertTempoToHex(bpm)).toBe(hex)
+  })
+
+  it.each([
+    { bpm: 256, hex: '00'},
+    { bpm: 295, hex: '27'}
+  ])('Returns hex value for BPM falling between 256-295 range ${bpm}', ({ bpm, hex}) => {
+    expect(convertTempoToHex(bpm)).toBe(hex)
+  })
+
+  it('Returns hex value of 28 for BPM lower than 40', () => {
+    expect(convertTempoToHex(1)).toBe('28')
+  })
+
+  it('Returns hex value of 27 for BPM higher than 295', () => {
+    expect(convertTempoToHex(9001)).toBe('27')
   })
 })
