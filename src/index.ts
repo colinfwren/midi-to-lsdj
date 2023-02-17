@@ -8,7 +8,7 @@ import {
   processPhrases
 } from "./processing";
 import { pipe } from "./utils";
-import {LSDJTrack} from "./types";
+import {LSDJTrack, LSDJProject} from "./types";
 
 /**
  * Load file from file system and convert it into a Midi instance
@@ -35,4 +35,16 @@ export function processTrack(data: Midi, trackIndex: number): LSDJTrack {
     processChains,
     processPhrases
   )(getPhrasesForTrack(notes, data))
+}
+
+/**
+ * Convert a MIDI file into a LSDJ project, that can be used to configure the project in LSDJ
+ *
+ * @param {Midi} data - Midi instance
+ * @returns {LSDJProject} - Project information to program into LSDJ
+ */
+export function processProject(data: Midi): LSDJProject {
+  return {
+    tempo: data.header.tempos[0].bpm
+  }
 }

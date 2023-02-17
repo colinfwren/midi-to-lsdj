@@ -1,6 +1,7 @@
 import {TrackNotes, TrackSection, TrackPhrase, LSDJNote, LSDJTrack} from "../types";
 import {distance, interval} from '@tonaljs/core'
 import {getTimeSignatureinSemiQuavers, range, formatLSDJNoteName} from "../utils";
+import { getNoteCommand } from "./getNoteCommand";
 import { Midi} from "@tonejs/midi";
 
 /**
@@ -123,9 +124,10 @@ export function getPhrasesForTrack(trackNotes: TrackNotes, midiData: Midi): LSDJ
             }
             return []
           }).flat()
+          const notes = trackNotes[noteIndex]
           return {
-            notes: trackNotes[noteIndex].map(formatLSDJNoteName),
-            command: '',
+            notes: notes.map(formatLSDJNoteName),
+            command: getNoteCommand(noteIndex, midiData, notes, triplets.length > 1),
             triplets
           }
         })

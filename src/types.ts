@@ -79,3 +79,7 @@ export type LSDJTrack = {
   phrases: LSDJPhrase[],
   tables: LSDJTable[]
 }
+
+export type LSDJProject = {
+  tempo: number
+}
