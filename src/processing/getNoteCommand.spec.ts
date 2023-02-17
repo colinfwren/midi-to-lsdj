@@ -131,6 +131,14 @@ describe('Setting tempo command for a note that falls on a tempo change', () => 
 })
 
 describe('Setting chord command for notes that have more than one note and no higher priority commands', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.CommandMapping)
+      .story('Chord Command')
+      .description('Set Chord Command on notes that have more than one note at that tick')
+  })
+
   it('Returns a chord command when there is more than one note and no higher priority commands', () => {
     const input: NoteInfo = {
       noteIndex: 0,
@@ -227,6 +235,14 @@ describe('Converting MIDI Tempo BPM to LSDJ Tempo Hex value', () => {
 })
 
 describe('Converting array of notes into a LSDJ chord hex', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.CommandMapping)
+      .story('Chord Hex Value')
+      .description("Set Chord Hex value based on LSDJ's chord rules")
+  })
+
   it('Only returns a hex value for three note chords', () => {
     expect(convertChordToHex(['C3', 'D#3', 'G3', 'A#3'])).toBe('37')
   })
