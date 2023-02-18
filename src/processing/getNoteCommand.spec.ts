@@ -188,7 +188,7 @@ describe('Setting chord command for notes that have more than one note and no hi
     { command: 'A00', commandName: 'Table'},
     { command: 'D01', commandName: 'Delay'},
     { command: 'R00', commandName: 'Retrigger'}
-  ])('Returns ${commandName} command when set', ({ command }) => {
+  ])('Returns $commandName command when set', ({ command }) => {
     const input: NoteInfo = {
       noteIndex: 0,
       midiData: midi,
@@ -246,7 +246,7 @@ describe('Setting sweep command for notes affected by pitch bends', () => {
     { command: 'D01', commandName: 'Delay'},
     { command: 'R00', commandName: 'Retrigger'},
     { command: 'C37', commandName: 'Chord'}
-  ])('Returns ${commandName} command when set', ({ command }) => {
+  ])('Returns $commandName command when set', ({ command }) => {
     const input: NoteInfo = {
       noteIndex: 36,
       midiData: pitchBendMidi,
@@ -295,14 +295,14 @@ describe('Converting MIDI Tempo BPM to LSDJ Tempo Hex value', () => {
   it.each([
     { bpm: 40, hex: '28'},
     { bpm: 255, hex: 'FF'}
-  ])('Returns hex value for BPM falling between 40-255 range ${bpm}', ({ bpm, hex}) => {
+  ])('Returns hex value for BPM falling between 40-255 range $bpm', ({ bpm, hex}) => {
     expect(convertTempoToHex(bpm)).toBe(hex)
   })
 
   it.each([
     { bpm: 256, hex: '00'},
     { bpm: 295, hex: '27'}
-  ])('Returns hex value for BPM falling between 256-295 range ${bpm}', ({ bpm, hex}) => {
+  ])('Returns hex value for BPM falling between 256-295 range $bpm', ({ bpm, hex}) => {
     expect(convertTempoToHex(bpm)).toBe(hex)
   })
 
