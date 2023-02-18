@@ -809,7 +809,7 @@ describe('getPhrasesForTrack', () => {
         )
       ]
     }
-    const result = getPhrasesForTrack(trackNotes, midi, new Map<number, TrackPitchBend>())
+    const result = getPhrasesForTrack(trackNotes, midi, new Map<number, TrackPitchBend>(), false)
     expect(result).toMatchObject(expectedResult)
   })
 })

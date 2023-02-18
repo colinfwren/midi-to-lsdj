@@ -105,10 +105,11 @@ export function calculateNoteDelta(root: string, triplet: string): number {
  *
  * @param {TrackNotes} trackNotes - Map of the ticks in the track to the notes played on that tick
  * @param {Midi} midiData - Data from Midi file
- * @param {TrackPitchBends} pitchBends - Map of ticks to pitchbend values
+ * @param {TrackPitchBends} pitchBends - Map of ticks to pitch bend values
+ * @param {boolean} isPercussion - If the track is a percussion track or not
  * @returns {LSDJTrack} - Track for LSDJ containing the phrases that make up the track
  */
-export function getPhrasesForTrack(trackNotes: TrackNotes, midiData: Midi, pitchBends: TrackPitchBends): LSDJTrack {
+export function getPhrasesForTrack(trackNotes: TrackNotes, midiData: Midi, pitchBends: TrackPitchBends, isPercussion: boolean): LSDJTrack {
   const semiquaver = midiData.header.ppq / 2 / 2
   const sextuplet = semiquaver / 3
   const trackSections = getTrackSections(midiData)
@@ -127,8 +128,8 @@ export function getPhrasesForTrack(trackNotes: TrackNotes, midiData: Midi, pitch
           }).flat()
           const notes = trackNotes[noteIndex]
           return {
-            notes: notes.map(formatLSDJNoteName),
-            command: getNoteCommand(noteIndex, midiData, notes, triplets.length > 1, pitchBends),
+            notes: notes.map((note) => formatLSDJNoteName(note, isPercussion)),
+            command: getNoteCommand(noteIndex, midiData, notes, triplets.length > 1, pitchBends, isPercussion),
             triplets
           }
         })
