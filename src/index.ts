@@ -32,11 +32,12 @@ export function readMidiFile(filePath: string): Midi {
 export function processTrack(data: Midi, trackIndex: number): LSDJTrack {
   const notes = getTrackNotes(data, trackIndex)
   const pitchBends = getTrackPitchBends(data, trackIndex)
+  const isPercussion = data.tracks[trackIndex].instrument.percussion
   return pipe<LSDJTrack>(
     processTables,
     processChains,
     processPhrases
-  )(getPhrasesForTrack(notes, data, pitchBends))
+  )(getPhrasesForTrack(notes, data, pitchBends, isPercussion))
 }
 
 /**
@@ -50,3 +51,11 @@ export function processProject(data: Midi): LSDJProject {
     tempo: data.header.tempos[0].bpm
   }
 }
+
+
+function test() {
+  const data = readMidiFile('./src/daybreak-tab.mid')
+  console.log(data)
+}
+
+test()

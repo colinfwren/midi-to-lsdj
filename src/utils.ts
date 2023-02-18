@@ -1,6 +1,7 @@
 import {MidiTimeSignatureEvent} from "midi-file";
 import {LSDJPhrase, TimeSignatureValues} from "./types";
 import {TimeSignatureEvent} from "@tonejs/midi/dist/Header";
+import {DRUM_MAP} from "./constants";
 
 /**
  * Reduce an array pf phrases into an array of sized arrays (i.e. chunks)
@@ -108,11 +109,15 @@ export function convertToHex(number: number | string): string {
  * character strings for non-sharp notes (i.e. C3) and LSDJ uses consistent 3 character strings (i.e. C_3)
  *
  * @param {string} note - Note string to format
+ * @param {boolean} isPercussion - If the track the note belongs to is a percussion track or not
  * @returns {string} - Note string formatted to fit 3 characters
  */
-export function formatLSDJNoteName(note: string): string {
-  if (note.indexOf('#') > -1) return note
-  return `${note[0]}_${note[1]}`
+export function formatLSDJNoteName(note: string, isPercussion = false): string {
+  if (!isPercussion) {
+    if (note.indexOf('#') > -1) return note
+    return `${note[0]}_${note[1]}`
+  }
+  return DRUM_MAP.has(note) ? DRUM_MAP.get(note) as string : '---'
 }
 
 /**
