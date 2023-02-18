@@ -1,4 +1,4 @@
-import {TrackNotes, TrackSection, TrackPhrase, LSDJNote, LSDJTrack} from "../types";
+import {TrackNotes, TrackSection, TrackPhrase, LSDJNote, LSDJTrack, TrackPitchBends} from "../types";
 import {distance, interval} from '@tonaljs/core'
 import {getTimeSignatureinSemiQuavers, range, formatLSDJNoteName} from "../utils";
 import { getNoteCommand } from "./getNoteCommand";
@@ -105,9 +105,10 @@ export function calculateNoteDelta(root: string, triplet: string): number {
  *
  * @param {TrackNotes} trackNotes - Map of the ticks in the track to the notes played on that tick
  * @param {Midi} midiData - Data from Midi file
+ * @param {TrackPitchBends} pitchBends - Map of ticks to pitchbend values
  * @returns {LSDJTrack} - Track for LSDJ containing the phrases that make up the track
  */
-export function getPhrasesForTrack(trackNotes: TrackNotes, midiData: Midi): LSDJTrack {
+export function getPhrasesForTrack(trackNotes: TrackNotes, midiData: Midi, pitchBends: TrackPitchBends): LSDJTrack {
   const semiquaver = midiData.header.ppq / 2 / 2
   const sextuplet = semiquaver / 3
   const trackSections = getTrackSections(midiData)
@@ -127,7 +128,7 @@ export function getPhrasesForTrack(trackNotes: TrackNotes, midiData: Midi): LSDJ
           const notes = trackNotes[noteIndex]
           return {
             notes: notes.map(formatLSDJNoteName),
-            command: getNoteCommand(noteIndex, midiData, notes, triplets.length > 1),
+            command: getNoteCommand(noteIndex, midiData, notes, triplets.length > 1, pitchBends),
             triplets
           }
         })

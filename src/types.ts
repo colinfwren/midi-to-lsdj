@@ -1,4 +1,5 @@
 import {MidiEvent} from "midi-file";
+import {Midi} from "@tonejs/midi";
 
 export type TrackEvent = {
   tick: number,
@@ -13,15 +14,15 @@ export type TrackEvents = {
 }
 
 export type TrackNotes = { // Map<number, string[]>
-  tick: number,
-  event: MidiEvent
   [key: number]: string[]
 }
 
-export type TrackNoteEvents = {
-  tick: number,
-  notes: TrackNotes[]
+export type TrackPitchBend = {
+  value: number,
+  duration: number
 }
+
+export type TrackPitchBends = Map<number, TrackPitchBend>
 
 export type TrackSection = {
   notesPerBar: number,
@@ -82,4 +83,13 @@ export type LSDJTrack = {
 
 export type LSDJProject = {
   tempo: number
+}
+
+export type NoteInfo = {
+  noteIndex: number,
+  midiData: Midi,
+  notes: string[],
+  hasTuplet: boolean,
+  pitchBends: TrackPitchBends,
+  command: string
 }

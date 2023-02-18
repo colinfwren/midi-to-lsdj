@@ -24,7 +24,6 @@ export function getTrackNotes(data: Midi, trackIndex: number): TrackNotes {
   track.notes.forEach(({ ticks, midi}, index) => {
     const nextNote = index != track.notes.length -1 ? track.notes[index + 1] : track.notes[track.notes.length - 1]
     const nextNoteDelta = nextNote.ticks ? nextNote.ticks - ticks : 0
-    // This doesn't work because unlike the python lib the JS version uses a delta between notes
     if ([0, sextuplet].includes(nextNoteDelta % triplet) && typeof notesAtTick[ticks] !== 'undefined') {
       notesAtTick[ticks].push(fromMidiSharps(midi))
     }

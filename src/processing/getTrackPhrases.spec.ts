@@ -5,7 +5,7 @@ import {
   getPhrasesNotesAsBase64,
   calculateNoteDelta
 } from './getTrackPhrases';
-import {TrackNotes, TrackPhrase, TrackSection, LSDJTrack} from '../types';
+import {TrackNotes, TrackPhrase, TrackSection, LSDJTrack, TrackPitchBend} from '../types';
 import {createNote, createPhrase, HOP_NOTE} from "../test/lsdj";
 import {Feature} from "../test/allure";
 import {Midi} from "@tonejs/midi";
@@ -383,14 +383,6 @@ const trackSections: TrackSection[] = [
 ]
 
 const trackNotes: TrackNotes = {
-  tick: 0,
-  event: {
-    channel: 1,
-    type: "noteOn",
-    deltaTime: 0,
-    noteNumber: 0,
-    velocity: 1,
-  },
   0: ['C3', 'D#3', 'G3'],
   1: [],
   2: [],
@@ -817,7 +809,7 @@ describe('getPhrasesForTrack', () => {
         )
       ]
     }
-    const result = getPhrasesForTrack(trackNotes, midi)
+    const result = getPhrasesForTrack(trackNotes, midi, new Map<number, TrackPitchBend>())
     expect(result).toMatchObject(expectedResult)
   })
 })
