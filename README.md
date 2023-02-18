@@ -25,12 +25,12 @@ The library offers the following features:
 - [x] Triplets (Adds a table with delta between root note and the triplet notes)
 - [x] De-duplication of Tables, Phrases and Chains
 - [x] Tempo changes
+- [x] Chords
+- [x] Sweeps when notes are pitch-bent in file
 
 ## Roadmap
 - [ ] De-duplication across multiple tracks
 - [ ] Drums
-- [ ] Chords
-- [ ] Sweeps when notes are pitch-bent in file
 - [ ] Advanced de-duplication of Phrases making use of transpose
 - [ ] LSDJ save file creation (so you don't need to enter it all by hand)
 - [ ] Validation of Midi file to ensure that no more than 256 Tables, Phrases and Chains across the song

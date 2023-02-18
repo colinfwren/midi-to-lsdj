@@ -2,13 +2,13 @@ import {Feature} from "../test/allure";
 import {Midi} from "@tonejs/midi";
 import {note} from "@tonaljs/core";
 import {
-  convertChordToHex,
+  convertChordToHex, convertPitchBendToHex,
   convertTempoToHex,
-  getNoteCommand,
-  NoteInfo,
-  processChordCommand,
+  getNoteCommand, getSweepPitchAsHex, getSweepSpeedAsHex,
+  processChordCommand, processSweepCommand,
   processTempoCommand
 } from "./getNoteCommand";
+import {NoteInfo, TrackPitchBend} from "../types";
 
 const baseTrack = {
   header: {
@@ -83,6 +83,19 @@ tempoChangeMidi.fromJSON({
   }
 })
 
+const pitchBendMidi = new Midi()
+pitchBendMidi.fromJSON(baseTrack)
+pitchBendMidi.tracks[0].addPitchBend({
+  ticks: 36,
+  value: -2
+})
+
+const emptyPitchBends = new Map<number, TrackPitchBend>()
+
+const pitchBends = new Map<number, TrackPitchBend>([
+  [36, { duration: 3, value: -2 }]
+])
+
 describe('Setting tempo command for a note that falls on a tempo change', () => {
 
   beforeEach(() => {
@@ -98,6 +111,7 @@ describe('Setting tempo command for a note that falls on a tempo change', () => 
       midiData: tempoChangeMidi,
       notes: ['F#3'],
       hasTuplet: false,
+      pitchBends: emptyPitchBends,
       command: ''
     }
     const expectedResult: NoteInfo = {
@@ -113,6 +127,7 @@ describe('Setting tempo command for a note that falls on a tempo change', () => 
       midiData: midi,
       notes: ['F#3'],
       hasTuplet: false,
+      pitchBends: emptyPitchBends,
       command: ''
     }
     expect(processTempoCommand(input)).toMatchObject(input)
@@ -124,6 +139,7 @@ describe('Setting tempo command for a note that falls on a tempo change', () => 
       midiData: midi,
       notes: ['F#3'],
       hasTuplet: false,
+      pitchBends: emptyPitchBends,
       command: ''
     }
     expect(processTempoCommand(input)).toMatchObject(input)
@@ -145,6 +161,7 @@ describe('Setting chord command for notes that have more than one note and no hi
       midiData: midi,
       notes: ['C3', 'D#3', 'G3'],
       hasTuplet: false,
+      pitchBends: emptyPitchBends,
       command: ''
     }
     const expected = {
@@ -159,6 +176,7 @@ describe('Setting chord command for notes that have more than one note and no hi
       midiData: midi,
       notes: ['C3'],
       hasTuplet: false,
+      pitchBends: emptyPitchBends,
       command: ''
     }
     expect(processChordCommand(input)).toMatchObject(input)
@@ -176,6 +194,65 @@ describe('Setting chord command for notes that have more than one note and no hi
       midiData: midi,
       notes: ['C3', 'D#3', 'G3'],
       hasTuplet: false,
+      pitchBends: emptyPitchBends,
+      command
+    }
+    expect(processChordCommand(input)).toMatchObject(input)
+  })
+})
+
+describe('Setting sweep command for notes affected by pitch bends', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.CommandMapping)
+      .story('Sweep Command')
+      .description('Set Sweep Command on notes that have a pitch bend at that tick')
+  })
+
+  it('Returns a sweep command when note has a pitch bend and there are no higher priority commands', () => {
+    const input: NoteInfo = {
+      noteIndex: 36,
+      midiData: pitchBendMidi,
+      notes: ['C3'],
+      hasTuplet: false,
+      pitchBends,
+      command: ''
+    }
+    const expected = {
+      ...input,
+      command: 'SA9'
+    }
+    expect(processSweepCommand(input)).toMatchObject(expected)
+  })
+
+  it('Returns no command if no pitch bend at that tick and there are no higher priority commands', () => {
+    const input: NoteInfo = {
+      noteIndex: 0,
+      midiData: pitchBendMidi,
+      notes: ['C3'],
+      hasTuplet: false,
+      pitchBends,
+      command: ''
+    }
+    expect(processSweepCommand(input)).toMatchObject(input)
+  })
+
+  it.each([
+    { command: 'H00', commandName: 'Hop'},
+    { command: 'T28', commandName: 'Tempo'},
+    { command: 'K00', commandName: 'Kill Note'},
+    { command: 'A00', commandName: 'Table'},
+    { command: 'D01', commandName: 'Delay'},
+    { command: 'R00', commandName: 'Retrigger'},
+    { command: 'C37', commandName: 'Chord'}
+  ])('Returns ${commandName} command when set', ({ command }) => {
+    const input: NoteInfo = {
+      noteIndex: 36,
+      midiData: pitchBendMidi,
+      notes: ['C3', 'D#3', 'G3'],
+      hasTuplet: false,
+      pitchBends,
       command
     }
     expect(processChordCommand(input)).toMatchObject(input)
@@ -192,13 +269,17 @@ describe('Getting command for note at tick', () => {
   })
 
   it('Returns tempo command if tempo change happens at note tick', () => {
-    expect(getNoteCommand(36, tempoChangeMidi, ['F#3'], false)).toBe('TB4')
+    expect(getNoteCommand(36, tempoChangeMidi, ['F#3'], false, emptyPitchBends)).toBe('TB4')
   })
   it('Returns chord command if more than one note at note tick', () => {
-    expect(getNoteCommand(0, midi, ['C3', 'D#3', 'G3'], false)).toBe('C37')
+    expect(getNoteCommand(0, midi, ['C3', 'D#3', 'G3'], false, emptyPitchBends)).toBe('C37')
+  })
+
+  it('Returns sweep command if pitch bend affects note at note tick', () => {
+    expect(getNoteCommand(36, pitchBendMidi, ['F#3'], false, pitchBends)).toBe('SA9')
   })
   it('Returns empty string if no events happen at note tick', () => {
-    expect(getNoteCommand(36, midi, ['F#3'], false)).toBe('')
+    expect(getNoteCommand(36, midi, ['F#3'], false, emptyPitchBends)).toBe('')
   })
 })
 
@@ -252,4 +333,74 @@ describe('Converting array of notes into a LSDJ chord hex', () => {
   it('Caps chord range at 15 semitones (F in hex)', () => {
     expect(convertChordToHex(['C3', 'C4', 'C5'])).toBe('CF')
   })
+})
+
+describe('Converting MIDI pitch bend to LSDJ sweep hex', () => {
+  beforeEach(() => {
+    reporter
+      .feature(Feature.CommandMapping)
+      .story('Sweep Hex Value')
+      .description("Mapping a pitch bend's value & duration to a sweep command hex")
+  })
+
+  it('converts a long deep negative bend into a long decreasing sweep', () => {
+    expect(convertPitchBendToHex({ duration: 1920, value: -2}, 480)).toBe('29')
+  })
+
+  it('converts a short positive bend into a short increasing sweep', () => {
+    expect(convertPitchBendToHex({ duration: 120, value: 1}, 480)).toBe('A3')
+  })
+
+})
+
+describe('Converting pitch bend value to hex', () => {
+  beforeEach(() => {
+    reporter
+      .feature(Feature.CommandMapping)
+      .story('Sweep Pitch Hex Value')
+      .description("Mapping a pitch bend's value to a sweep's pitch increase/decrease value")
+  })
+
+  it.each([
+    { bendVal: -2, hexVal: '9'},
+    { bendVal: -1.8, hexVal: 'A'},
+    { bendVal: -1.5, hexVal: 'B'},
+    { bendVal: -1.2, hexVal: 'C'},
+    { bendVal: -0.9, hexVal: 'D'},
+    { bendVal: -0.6, hexVal: 'E'},
+    { bendVal: -0.3, hexVal: 'F'},
+    { bendVal: 0, hexVal: '0'},
+    { bendVal: 0.3, hexVal: '1'},
+    { bendVal: 0.6, hexVal: '2'},
+    { bendVal: 0.9, hexVal: '3'},
+    { bendVal: 1.2, hexVal: '4'},
+    { bendVal: 1.5, hexVal: '5'},
+    { bendVal: 1.8, hexVal: '6'},
+    { bendVal: 2, hexVal: '7'},
+  ])('Maps $bendVal octave pitch bend to $hexVal hex', ({ bendVal, hexVal }) => {
+    expect(getSweepPitchAsHex({ value: bendVal, duration: 0 })).toBe(hexVal)
+  })
+})
+
+describe('Converting pitch bend duration to hex', () => {
+
+  beforeEach(() => {
+    reporter
+      .feature(Feature.CommandMapping)
+      .story('Sweep Speed Hex Value')
+      .description("Mapping a pitch bend's duration to a sweep's speed value")
+  })
+
+  it.each([
+    { durationName: 'hemidemisemiquaver', duration: 30, hexVal: 'E'},
+    { durationName: 'demisemiquaver', duration: 60, hexVal: 'C'},
+    { durationName: 'semiquaver', duration: 120, hexVal: 'A'},
+    { durationName: 'quaver', duration: 240, hexVal: '8'},
+    { durationName: 'crotchet', duration: 480, hexVal: '6'},
+    { durationName: 'minim', duration: 960, hexVal: '4'},
+    { durationName: 'semibreve', duration: 1920, hexVal: '2'},
+  ])('Maps pitch bend with duration of $durationName to $hexVal hex', ({ duration, hexVal }) => {
+    expect(getSweepSpeedAsHex({ value: -2, duration }, 480)).toBe(hexVal)
+  })
+
 })

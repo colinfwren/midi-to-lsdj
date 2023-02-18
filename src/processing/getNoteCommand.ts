@@ -3,14 +3,9 @@ import {convertToHex, pipe} from "../utils";
 import {note as tonalNote} from "@tonaljs/core";
 import { fromMidi } from "@tonaljs/note";
 import {calculateNoteDelta} from "./getTrackPhrases";
+import {NoteInfo, TrackPitchBend, TrackPitchBends} from "../types";
 
-export type NoteInfo = {
-  noteIndex: number,
-  midiData: Midi,
-  notes: string[],
-  hasTuplet: boolean,
-  command: string
-}
+
 
 /**
  * Convert BPM to LSDJ compatible hex. LSDJ uses 28-FF to map BPM of 40-255 and 0-27 to map 256-295
@@ -71,6 +66,48 @@ export function convertChordToHex(notes: string[]): string {
 }
 
 /**
+ * Calculate the pitch value for a sweep based on the pitch bend's value
+ *
+ * @param {TrackPitchBend} pitchBend - Pitch bend value and duration
+ * @returns {string} - hex value representing pitch increase/decrease for sweep
+ */
+export function getSweepPitchAsHex(pitchBend: TrackPitchBend): string {
+  const pitchVals = [0, 0.3, 0.6, 0.9, 1.2, 1.5, 1.8, 2]
+  const fullPitchVals = [...pitchVals, 'b', -2, -1.8, -1.5, -1.2, -0.9, -0.6, -0.3]
+  const mappedPitchVal = pitchVals.reduce((prev, curr) => Math.abs(curr - Math.abs(pitchBend.value)) < Math.abs(prev - Math.abs(pitchBend.value)) ? curr : prev)
+  const signedMappedPitchVal = pitchBend.value < 0 ? mappedPitchVal * -1 : mappedPitchVal
+  const mappedPitchValIndex = fullPitchVals.indexOf(signedMappedPitchVal)
+  return convertToHex(mappedPitchValIndex).charAt(1)
+}
+
+/**
+ * Calculate the sweep speed based on the pitch bend's duration and the number of ticks in a crotchet
+ *
+ * @param {TrackPitchBend} pitchBend - Pitch bend value and duration
+ * @param {number} ppq - number of ticks in a crotchet
+ * @returns {string} - hex value representing speed of sweeo
+ */
+export function getSweepSpeedAsHex(pitchBend: TrackPitchBend, ppq: number): string {
+  const noteTickLengths = [4, 2, 1, 0.5, 0.25, 0.125, 0.0625].map((duration) => ppq * duration)
+  const mappedNoteDuration = noteTickLengths.reduce((prev, curr) => Math.abs(curr - pitchBend.duration) < Math.abs(prev - pitchBend.duration) ? curr : prev)
+  const noteTickIndex = noteTickLengths.indexOf(mappedNoteDuration)
+  return convertToHex((noteTickIndex  + 1)* 2).charAt(1)
+}
+
+/**
+ * Map the pitchbend's value and duration to LSDJ's sweep command's time and pitch increase/decrease values
+ *
+ * @param {TrackPitchBend} pitchBend - Pitch bend value and duration
+ * @param {number} ppq - number of ticks in a crotchet
+ * @returns {string} - The hex value that represents the sweep based on LSDJ's sweep rules
+ */
+export function convertPitchBendToHex(pitchBend: TrackPitchBend, ppq: number): string {
+  const pitchAsHex = getSweepPitchAsHex(pitchBend)
+  const speedAsHex = getSweepSpeedAsHex(pitchBend, ppq)
+  return `${speedAsHex}${pitchAsHex}`
+}
+
+/**
  * Add a chord command if there is more than one note and there's not alread a Hop, Tempo, Kill, Table, Delay, Retrigger
  * command on the note
  *
@@ -87,6 +124,24 @@ export function processChordCommand(noteInfo: NoteInfo): NoteInfo {
   }
 }
 
+/**
+ * Add a Sweep command if there is a pitch bend on the note and there's not already a Hop, Tempo, Kill, Table, Deplay,
+ * Retrigger or Chord command on the note
+ *
+ * @param {NoteInfo} noteInfo - Information about the note used to process the sweep command
+ * @returns {NoteInfo} - new NoteInfo instance with sweep command if applicable
+ */
+export function processSweepCommand(noteInfo: NoteInfo): NoteInfo {
+  const { pitchBends, command, noteIndex, midiData } = noteInfo
+  const pitchBend = pitchBends.get(noteIndex)
+  if (['H', 'T', 'K', 'A', 'D', 'R', 'C'].includes(command.charAt(0)) || typeof pitchBend === 'undefined') return noteInfo
+  const pitchBendAsHex = convertPitchBendToHex(pitchBend, midiData.header.ppq)
+  return {
+    ...noteInfo,
+    command: `S${pitchBendAsHex}`
+  }
+}
+
 // TODO: Add new command processors here, check value of NoteInfo.command before processing, add processor for table when get to lower priority processors
 
 /**
@@ -96,11 +151,13 @@ export function processChordCommand(noteInfo: NoteInfo): NoteInfo {
  * @param {Midi} midiData - The data from the midi file
  * @param {string[]} notes - The notes on the tick
  * @param {boolean} hasTuplet - If the note has tuplet or not
+ * @param {TrackPitchBends} pitchBends - Map of pitch bends in the track
  * @returns {string} The appropriate command or empty string if no command to be set
  */
-export function getNoteCommand(noteIndex: number, midiData: Midi, notes: string[], hasTuplet: boolean): string {
+export function getNoteCommand(noteIndex: number, midiData: Midi, notes: string[], hasTuplet: boolean, pitchBends: TrackPitchBends): string {
   return pipe(
     processTempoCommand,
-    processChordCommand
-  )({ noteIndex, midiData, notes, hasTuplet, command: ''}).command
+    processChordCommand,
+    processSweepCommand
+  )({ noteIndex, midiData, notes, hasTuplet, pitchBends, command: ''}).command
 }

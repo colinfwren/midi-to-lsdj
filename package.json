@@ -1,6 +1,6 @@
 {
   "name": "midi-to-lsdj",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Convert a MIDI track into an array of LSDJ chains",
   "main": "dist/index.js",
   "types": "dist/types.d.ts",

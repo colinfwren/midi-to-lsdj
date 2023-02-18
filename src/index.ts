@@ -5,7 +5,8 @@ import {
   getPhrasesForTrack,
   processTables,
   processChains,
-  processPhrases
+  processPhrases,
+  getTrackPitchBends
 } from "./processing";
 import { pipe } from "./utils";
 import {LSDJTrack, LSDJProject} from "./types";
@@ -30,11 +31,12 @@ export function readMidiFile(filePath: string): Midi {
  */
 export function processTrack(data: Midi, trackIndex: number): LSDJTrack {
   const notes = getTrackNotes(data, trackIndex)
+  const pitchBends = getTrackPitchBends(data, trackIndex)
   return pipe<LSDJTrack>(
     processTables,
     processChains,
     processPhrases
-  )(getPhrasesForTrack(notes, data))
+  )(getPhrasesForTrack(notes, data, pitchBends))
 }
 
 /**
