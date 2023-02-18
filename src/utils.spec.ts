@@ -1,5 +1,6 @@
 import {formatLSDJNoteName, getTripletKey} from "./utils";
 import {Feature} from "./test/allure";
+import {DRUM_MAP} from "./constants";
 
 describe('getTripletKey', () => {
 
@@ -30,19 +31,9 @@ describe('formatLSDJNoteName', () => {
   it('Returns non-percussion non-sharp notes with underscore', () => {
     expect(formatLSDJNoteName('C5')).toBe('C_5')
   })
-  it.each([
-      { note: 'C3', drum: 'BD-' },
-      { note: 'B3', drum: 'MT-' },
-      { note: 'A3', drum: 'MT-' },
-      { note: 'G3', drum: 'LT-' },
-      { note: 'G#3', drum: 'CHH' },
-      { note: 'D3', drum: 'SD-' },
-      { note: 'C#4', drum: 'CYM' },
-      { note: 'C4', drum: 'HT-' },
-      { note: 'D#4', drum: 'RCY' },
-      { note: 'D4', drum: 'HT-' },
-      { note: 'E4', drum: 'RCY' }
-  ])('Returns percussion note $note as $drum', ({note, drum}) => {
+  it.each(
+    [...DRUM_MAP.entries()].map(([key, value]) => ({ note: key, drum: value}))
+  )('Returns percussion note $note as $drum', ({note, drum}) => {
     expect(formatLSDJNoteName(note, true)).toBe(drum)
   })
   it('Returns percussion note not in drum map as ---', () => {

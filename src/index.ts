@@ -51,11 +51,3 @@ export function processProject(data: Midi): LSDJProject {
     tempo: data.header.tempos[0].bpm
   }
 }
-
-
-function test() {
-  const data = readMidiFile('./src/daybreak-tab.mid')
-  console.log(data)
-}
-
-test()

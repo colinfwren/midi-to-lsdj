@@ -91,5 +91,6 @@ export type NoteInfo = {
   notes: string[],
   hasTuplet: boolean,
   pitchBends: TrackPitchBends,
+  isPercussion: boolean,
   command: string
 }

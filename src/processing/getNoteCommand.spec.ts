@@ -2,10 +2,14 @@ import {Feature} from "../test/allure";
 import {Midi} from "@tonejs/midi";
 import {note} from "@tonaljs/core";
 import {
-  convertChordToHex, convertPitchBendToHex,
+  convertChordToHex,
+  convertPitchBendToHex,
   convertTempoToHex,
-  getNoteCommand, getSweepPitchAsHex, getSweepSpeedAsHex,
-  processChordCommand, processSweepCommand,
+  getNoteCommand,
+  getSweepPitchAsHex,
+  getSweepSpeedAsHex,
+  processChordCommand,
+  processSweepCommand,
   processTempoCommand
 } from "./getNoteCommand";
 import {NoteInfo, TrackPitchBend} from "../types";
@@ -112,6 +116,7 @@ describe('Setting tempo command for a note that falls on a tempo change', () => 
       notes: ['F#3'],
       hasTuplet: false,
       pitchBends: emptyPitchBends,
+      isPercussion: false,
       command: ''
     }
     const expectedResult: NoteInfo = {
@@ -128,6 +133,7 @@ describe('Setting tempo command for a note that falls on a tempo change', () => 
       notes: ['F#3'],
       hasTuplet: false,
       pitchBends: emptyPitchBends,
+      isPercussion: false,
       command: ''
     }
     expect(processTempoCommand(input)).toMatchObject(input)
@@ -140,6 +146,7 @@ describe('Setting tempo command for a note that falls on a tempo change', () => 
       notes: ['F#3'],
       hasTuplet: false,
       pitchBends: emptyPitchBends,
+      isPercussion: false,
       command: ''
     }
     expect(processTempoCommand(input)).toMatchObject(input)
@@ -162,6 +169,7 @@ describe('Setting chord command for notes that have more than one note and no hi
       notes: ['C3', 'D#3', 'G3'],
       hasTuplet: false,
       pitchBends: emptyPitchBends,
+      isPercussion: false,
       command: ''
     }
     const expected = {
@@ -177,10 +185,25 @@ describe('Setting chord command for notes that have more than one note and no hi
       notes: ['C3'],
       hasTuplet: false,
       pitchBends: emptyPitchBends,
+      isPercussion: false,
       command: ''
     }
     expect(processChordCommand(input)).toMatchObject(input)
   })
+
+  it('Returns an empty command when note is part of a percussion track and  no higher priority commands', () => {
+    const input: NoteInfo = {
+      noteIndex: 0,
+      midiData: midi,
+      notes: ['C3'],
+      hasTuplet: false,
+      pitchBends: emptyPitchBends,
+      isPercussion: true,
+      command: ''
+    }
+    expect(processChordCommand(input)).toMatchObject(input)
+  })
+
   it.each([
     { command: 'H00', commandName: 'Hop'},
     { command: 'T28', commandName: 'Tempo'},
@@ -195,6 +218,7 @@ describe('Setting chord command for notes that have more than one note and no hi
       notes: ['C3', 'D#3', 'G3'],
       hasTuplet: false,
       pitchBends: emptyPitchBends,
+      isPercussion: false,
       command
     }
     expect(processChordCommand(input)).toMatchObject(input)
@@ -217,6 +241,7 @@ describe('Setting sweep command for notes affected by pitch bends', () => {
       notes: ['C3'],
       hasTuplet: false,
       pitchBends,
+      isPercussion: false,
       command: ''
     }
     const expected = {
@@ -233,6 +258,7 @@ describe('Setting sweep command for notes affected by pitch bends', () => {
       notes: ['C3'],
       hasTuplet: false,
       pitchBends,
+      isPercussion: false,
       command: ''
     }
     expect(processSweepCommand(input)).toMatchObject(input)
@@ -253,6 +279,7 @@ describe('Setting sweep command for notes affected by pitch bends', () => {
       notes: ['C3', 'D#3', 'G3'],
       hasTuplet: false,
       pitchBends,
+      isPercussion: false,
       command
     }
     expect(processChordCommand(input)).toMatchObject(input)
@@ -269,17 +296,17 @@ describe('Getting command for note at tick', () => {
   })
 
   it('Returns tempo command if tempo change happens at note tick', () => {
-    expect(getNoteCommand(36, tempoChangeMidi, ['F#3'], false, emptyPitchBends)).toBe('TB4')
+    expect(getNoteCommand(36, tempoChangeMidi, ['F#3'], false, emptyPitchBends, false)).toBe('TB4')
   })
   it('Returns chord command if more than one note at note tick', () => {
-    expect(getNoteCommand(0, midi, ['C3', 'D#3', 'G3'], false, emptyPitchBends)).toBe('C37')
+    expect(getNoteCommand(0, midi, ['C3', 'D#3', 'G3'], false, emptyPitchBends, false)).toBe('C37')
   })
 
   it('Returns sweep command if pitch bend affects note at note tick', () => {
-    expect(getNoteCommand(36, pitchBendMidi, ['F#3'], false, pitchBends)).toBe('SA9')
+    expect(getNoteCommand(36, pitchBendMidi, ['F#3'], false, pitchBends, false)).toBe('SA9')
   })
   it('Returns empty string if no events happen at note tick', () => {
-    expect(getNoteCommand(36, midi, ['F#3'], false, emptyPitchBends)).toBe('')
+    expect(getNoteCommand(36, midi, ['F#3'], false, emptyPitchBends, false)).toBe('')
   })
 })
 

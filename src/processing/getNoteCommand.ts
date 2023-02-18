@@ -115,8 +115,8 @@ export function convertPitchBendToHex(pitchBend: TrackPitchBend, ppq: number): s
  * @returns {NoteInfo} - new NoteInfo instance with chord command if applicable
  */
 export function processChordCommand(noteInfo: NoteInfo): NoteInfo {
-  const { notes, command } = noteInfo
-  if (['H', 'T', 'K', 'A', 'D', 'R'].includes(command.charAt(0)) || notes.length < 2) return noteInfo
+  const { notes, command, isPercussion } = noteInfo
+  if (['H', 'T', 'K', 'A', 'D', 'R'].includes(command.charAt(0)) || notes.length < 2 || isPercussion) return noteInfo
   const chordAsHex = convertChordToHex(notes)
   return {
     ...noteInfo,
@@ -152,12 +152,21 @@ export function processSweepCommand(noteInfo: NoteInfo): NoteInfo {
  * @param {string[]} notes - The notes on the tick
  * @param {boolean} hasTuplet - If the note has tuplet or not
  * @param {TrackPitchBends} pitchBends - Map of pitch bends in the track
+ * @param {boolean} isPercussion - If the track the note belongs to is a percussion track
  * @returns {string} The appropriate command or empty string if no command to be set
  */
-export function getNoteCommand(noteIndex: number, midiData: Midi, notes: string[], hasTuplet: boolean, pitchBends: TrackPitchBends): string {
+export function getNoteCommand(noteIndex: number, midiData: Midi, notes: string[], hasTuplet: boolean, pitchBends: TrackPitchBends, isPercussion: boolean): string {
   return pipe(
     processTempoCommand,
     processChordCommand,
     processSweepCommand
-  )({ noteIndex, midiData, notes, hasTuplet, pitchBends, command: ''}).command
+  )({
+    noteIndex,
+    midiData,
+    notes,
+    hasTuplet,
+    pitchBends,
+    isPercussion,
+    command: ''
+  }).command
 }

@@ -129,7 +129,7 @@ export function getPhrasesForTrack(trackNotes: TrackNotes, midiData: Midi, pitch
           const notes = trackNotes[noteIndex]
           return {
             notes: notes.map((note) => formatLSDJNoteName(note, isPercussion)),
-            command: getNoteCommand(noteIndex, midiData, notes, triplets.length > 1, pitchBends),
+            command: getNoteCommand(noteIndex, midiData, notes, triplets.length > 1, pitchBends, isPercussion),
             triplets
           }
         })
